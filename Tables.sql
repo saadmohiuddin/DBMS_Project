@@ -1,12 +1,12 @@
 CREATE TABLE Student (
-  ID INT NOT NULL,
+  ID VARCHAR(10) NOT NULL,
   name VARCHAR(200) NOT NULL,
   welcome_message VARCHAR(2000) NOT NULL,
   PRIMARY KEY (ID)
 );
 
 CREATE TABLE LogIn (
-  ID INT NOT NULL,
+  ID VARCHAR(10) NOT NULL,
   log_in_time TIMESTAMP NOT NULL,
   log_out_time TIMESTAMP NOT NULL,
   duration INT AS (TIMESTAMPDIFF(SECOND, log_in_time, log_out_time)),
@@ -14,7 +14,7 @@ CREATE TABLE LogIn (
 );
 
 CREATE TABLE FaceImages (
-  ID INT NOT NULL,
+  ID VARCHAR(10) NOT NULL,
   filename VARCHAR(128) NOT NULL,
   mimetype VARCHAR(64) NOT NULL,
   FOREIGN KEY (ID) REFERENCES Student (ID)
@@ -29,29 +29,42 @@ CREATE TABLE Course (
 );
 
 CREATE TABLE Takes (
-  ID INT NOT NULL,
+  ID VARCHAR(10) NOT NULL,
   Course_ID VARCHAR(8) NOT NULL,
   FOREIGN KEY (ID) REFERENCES Student (ID),
   FOREIGN KEY (Course_ID) REFERENCES Course (Course_ID)
 );
 
-CREATE TABLE ClassTimeZoom (
+CREATE TABLE Lecture (
   Course_ID VARCHAR(8) NOT NULL,
-  ClassTime TIME NOT NULL,
+  LectNo INT NOT NULL,
+  LectTime_HH INT NOT NULL,
+  LectTime_MM INT NOT NULL,
+  LectTime_Duration INT NOT NULL,
+  Weekday INT NOT NULL,
   Zoom VARCHAR(128) NOT NULL,
   FOREIGN KEY (Course_ID) REFERENCES Course (Course_ID)
 );
 
-CREATE TABLE ClassLectNotes (
+CREATE TABLE Tutorial (
   Course_ID VARCHAR(8) NOT NULL,
-  LectNotePath VARCHAR(128),  
+  TutTime_HH INT,
+  TutTime_MM INT,
+  Weekday INT NOT NULL,
+  Zoom VARCHAR(128),
+  FOREIGN KEY (Course_ID) REFERENCES Course (Course_ID)
+);
+
+CREATE TABLE LectNotes (
+  Course_ID VARCHAR(8) NOT NULL,
+  LectNotePath VARCHAR(255) NOT NULL,  
   mimetype VARCHAR(64) NOT NULL,
   FOREIGN KEY (Course_ID) REFERENCES Course (Course_ID)
 );
 
-CREATE TABLE ClassTutNotes (
+CREATE TABLE TutNotes (
   Course_ID VARCHAR(8) NOT NULL,
-  TutNotePath VARCHAR(128),  
+  TutNotePath VARCHAR(255) NOT NULL,  
   mimetype VARCHAR(64) NOT NULL,
   FOREIGN KEY (Course_ID) REFERENCES Course (Course_ID)
 );
