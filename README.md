@@ -4,8 +4,7 @@ Face recognition using python and mysql.
 
 *******
 
-## Usage
-
+## Useage
 
 ### Environment
 
