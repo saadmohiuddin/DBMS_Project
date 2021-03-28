@@ -7,6 +7,8 @@ import pickle
 from datetime import datetime
 import sys
 import PySimpleGUI as sg
+from update_login_logout import update_login_time, update_logout_time
+
 
 # 1 Create database connection
 myconn = mysql.connector.connect(host="localhost", user="root", passwd="Mysql7-4", database="facerecognition")
@@ -70,17 +72,19 @@ while True:
             # print(id_)
             # print(labels[id_])
             font = cv2.QT_FONT_NORMAL
-            id = 0
-            id += 1
-            name = labels[id_]
-            current_name = name
+            #id = 0
+            #id += 1
+            #name = labels[id_]
+            id=labels[id_]
+            current_id = id
             color = (255, 0, 0)
             stroke = 2
-            cv2.putText(frame, name, (x, y), font, 1, color, stroke, cv2.LINE_AA)
+            cv2.putText(frame, id, (x, y), font, 1, color, stroke, cv2.LINE_AA)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), (2))
 
             # Find the student information in the database.
-            select = "SELECT student_id, name, DAY(login_date), MONTH(login_date), YEAR(login_date) FROM Student WHERE name='%s'" % (name)
+            #select = "SELECT ID, name, DAY(login_date), MONTH(login_date), YEAR(login_date) FROM Student WHERE name='%s'" % (name)
+            select = "SELECT ID, name FROM student WHERE ID='%s'" % (id)
             name = cursor.execute(select)
             result = cursor.fetchall()
             # print(result)
@@ -92,30 +96,51 @@ while True:
             # If the student's information is not found in the database
             if data == "error":
                 # the student's data is not in the database
-                print("The student", current_name, "is NOT FOUND in the database.")
+                print("The ID", current_id, "is NOT FOUND in the database.")
 
             # If the student's information is found in the database
             else:
+                win.Close()
+                cap.release()
                 """
                 Implement useful functions here.
                 Check the course and classroom for the student.
                     If the student has class room within one hour, the corresponding course materials
                         will be presented in the GUI.
+                """
+                update_login_time(current_id)
+                print(data)
+                transition_layout=[[sg.Text("You have logged in successfully,"+data[1])], [sg.Button("Continue")], [sg.Button("Logout")]]
+                transition_window = sg.Window("Transition", transition_layout, size=(400, 300))
+                cv2.destroyAllWindows()
+                while True:
+                    t_event,t_values=transition_window.read()
+                    if t_event == sg.WIN_CLOSED or t_event=="Logout":
+                        update_logout_time(current_id)
+                        break
+
+                    if t_event =="Continue":
+                        #Add Mahnoor's code here to find whether class is in on hour or not
+                        break
+
+
+                """
                     if the student does not have class at the moment, the GUI presents a personal class
                         timetable for the student.
 
                 """
-                update =  "UPDATE Student SET login_date=%s WHERE name=%s"
-                val = (date, current_name)
-                cursor.execute(update, val)
-                update = "UPDATE Student SET login_time=%s WHERE name=%s"
-                val = (current_time, current_name)
-                cursor.execute(update, val)
-                myconn.commit()
 
-                hello = ("Hello ", current_name, "You did attendance today")
-                print(hello)
-                engine.say(hello)
+                #update =  "UPDATE Login SET log_in_time=%s WHERE ID=%s"
+                #val = (str(now), current_id)
+                #cursor.execute(update, val)
+                #update = "UPDATE Student SET login_time=%s WHERE name=%s"
+                #val = (current_time, current_name)
+                #cursor.execute(update, val)
+                #myconn.commit()
+
+                #hello = ("Hello "+ current_id+ ". You logged in")
+                #print(hello)
+                #engine.say(hello)
 
 
         # If the face is unrecognized
