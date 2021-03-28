@@ -100,8 +100,6 @@ while True:
 
             # If the student's information is found in the database
             else:
-                win.Close()
-                cap.release()
                 """
                 Implement useful functions here.
                 Check the course and classroom for the student.
