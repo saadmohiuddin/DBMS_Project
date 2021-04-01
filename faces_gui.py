@@ -8,6 +8,8 @@ from datetime import datetime
 import sys
 import PySimpleGUI as sg
 from update_login_logout import update_login_time, update_logout_time
+from timetable import draw_timetable_window
+from mainWindowGUI import draw_course_window
 
 
 # 1 Create database connection
@@ -106,11 +108,14 @@ while True:
                     If the student has class room within one hour, the corresponding course materials
                         will be presented in the GUI.
                 """
-                update_login_time(current_id)
-                print(data)
-                transition_layout=[[sg.Text("You have logged in successfully,"+data[1])], [sg.Button("Continue")], [sg.Button("Logout")]]
+                update_login_time(current_id) #If this is the case, then we need to keep only the latest login details in DB
+                #print(data)
+
+                # Need to call another MySQL query that gives the email_id as well in addition to what is contained in variable data
+                #user = {"id" : , "email" : , "name": }
+                transition_layout=[[sg.Text("You have logged in successfully, " + data[1])], [sg.Button("Continue")], [sg.Button("Logout")]]
                 transition_window = sg.Window("Transition", transition_layout, size=(400, 300))
-                cv2.destroyAllWindows()
+                cv2.destroyAllWindows() # Try to close once we open the next one for smoother transition
                 while True:
                     t_event,t_values=transition_window.read()
                     if t_event == sg.WIN_CLOSED or t_event=="Logout":
@@ -118,7 +123,16 @@ while True:
                         break
 
                     if t_event =="Continue":
-                        #Add Mahnoor's code here to find whether class is in on hour or not
+                        # all_classes = sql query by Van
+                        # has_class = mahnoor_function(all_classes)
+                        # if has_class[0]:
+                        #   course = get_full_course_details(has_class[1])
+                        #   draw_course_window(course, user, login_time, transition_window)
+                        # else:
+                        #   draw_timetable_window(all_classes, user, login_time, transition_window)
+                        #
+                        # logout_time = date.now()
+                        update_logout_time(current_id)
                         break
 
 
