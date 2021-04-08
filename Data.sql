@@ -1,9 +1,9 @@
-INSERT INTO Student (ID, name, email, password) VALUES
-('3035445364','Saalim Mohamed Abdulla','mistermiyagi15973@gmail.com','munich73'),
-('3035445974','Malik Muhammad Junaid Zubair','sicparvismagna15973@gmail.com','kathmandu73'),
-('3035602821','Ahmed Mahnoor','opamuk15973@gmail.com','ankara73'),
-('3035492989','Mohiuddin Saad','jmcroissant15973@gmail.com','orleans73'),
-('3035436399','Vanessa Leung Jia Min','historia15973@gmail.com','athens73');
+INSERT INTO Student (ID, name, email) VALUES
+('3035445364','Saalim Mohamed Abdulla','mistermiyagi15973@gmail.com'),
+('3035445974','Malik Muhammad Junaid Zubair','sicparvismagna15973@gmail.com'),
+('3035602821','Ahmed Mahnoor','opamuk15973@gmail.com'),
+('3035492989','Mohiuddin Saad','jmcroissant15973@gmail.com'),
+('3035436399','Vanessa Leung Jia Min','historia15973@gmail.com');
 
 INSERT INTO LogIn (ID, log_in_time, log_out_time) VALUES
 ('3035492989', '2021-03-08 09:01:00', '2021-03-08 09:05:00'),
