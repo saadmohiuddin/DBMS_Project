@@ -2,15 +2,10 @@ CREATE TABLE Student (
   ID VARCHAR(10) NOT NULL,
   name VARCHAR(200) NOT NULL,
   email VARCHAR(50) NOT NULL,
-  PRIMARY KEY (ID)
-);
-
-CREATE TABLE LogIn (
-  ID VARCHAR(10) NOT NULL,
-  log_in_time TIMESTAMP NOT NULL,
-  log_out_time TIMESTAMP NOT NULL,
+  log_in_time TIMESTAMP,
+  log_out_time TIMESTAMP,
   duration INT AS (TIMESTAMPDIFF(SECOND, log_in_time, log_out_time)),
-  FOREIGN KEY (ID) REFERENCES Student (ID)
+  PRIMARY KEY (ID)
 );
 
 CREATE TABLE Course (

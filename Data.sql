@@ -1,19 +1,9 @@
-INSERT INTO Student (ID, name, email) VALUES
-('3035445364','Saalim Mohamed Abdulla','mistermiyagi15973@gmail.com'),
-('3035445974','Malik Muhammad Junaid Zubair','sicparvismagna15973@gmail.com'),
-('3035602821','Ahmed Mahnoor','opamuk15973@gmail.com'),
-('3035492989','Mohiuddin Saad','jmcroissant15973@gmail.com'),
-('3035436399','Vanessa Leung Jia Min','historia15973@gmail.com');
-
-INSERT INTO LogIn (ID, log_in_time, log_out_time) VALUES
-('3035492989', '2021-03-08 09:01:00', '2021-03-08 09:05:00'),
-('3035602821', '2021-03-10 10:10:00', '2021-03-10 10:24:00'),
-('3035445364', '2021-03-12 13:09:00', '2021-03-12 13:49:00'),
-('3035445974', '2021-03-12 17:25:00', '2021-03-12 18:05:00'),
-('3035445364', '2021-03-13 11:52:00', '2021-03-13 12:05:00'),
-('3035436399', '2021-03-17 10:11:00', '2021-03-17 10:15:00'),
-('3035445364', '2021-03-18 15:02:00', '2021-03-18 15:19:00'),
-('3035445974', '2021-03-19 19:25:00', '2021-03-19 19:45:00');
+INSERT INTO Student (ID, name, email, log_in_time, log_out_time) VALUES
+('3035445364','Saalim Mohamed Abdulla','mistermiyagi15973@gmail.com','2021-03-08 09:01:00','2021-03-08 09:05:00'),
+('3035445974','Malik Muhammad Junaid Zubair','sicparvismagna15973@gmail.com','2021-03-10 10:10:00','2021-03-10 10:24:00'),
+('3035602821','Ahmed Mahnoor','opamuk15973@gmail.com','2021-03-12 13:09:00','2021-03-12 13:49:00'),
+('3035492989','Mohiuddin Saad','jmcroissant15973@gmail.com','2021-03-12 17:25:00','2021-03-12 18:05:00'),
+('3035436399','Vanessa Leung Jia Min','historia15973@gmail.com','2021-03-13 11:52:00','2021-03-13 12:05:00');
 
 INSERT INTO Course (Course_ID, path_to_materials, name, info, teachers_message) VALUES
 ('STAT4609','/notes/STAT4609','Big Data Analytics','In the past decade, huge volume of data with highly complicated structure has appeared in every aspect, such as social web logs, e-mails, video, speech recordings, photographs, tweets and others. The efficient extraction of valuable information from these data sources becomes a challenging task. This course focuses on the practical knowledge and skills of some advanced analytics and statistical modeling for solving big data problems.','Consuming food or beverages of any kind is strictly prohibited during class times. Messes with my flow. Thank you for your understanding.'),
