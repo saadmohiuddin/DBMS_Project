@@ -12,18 +12,19 @@ sg.theme('DarkBlue6')
 default_frame_border_width = 2,
 default_frame_title_color = 'white',
 default_frame_font = "Arial 9 bold"
-default_frame_pad = ((20, 10), (10, 10))
+default_frame_pad = ((20, 10), (8, 8))
 default_frame_element_justification = 'left'
 
 course = {
     "code": "COMP3278",
     "title": "Introduction to database management systems",
+    "info": "This course studies the principles, design, administration, and implementation of database management systems. Topics include: entity-relationship model, relational model, relational algebra, database design and normalization, database query languages, indexing schemes, integrity and concurrency control.",
     # there can be more than one lecture (duration, (day_number, starting_hour, starting_min))
     "lecture": [(2, (5, 9, 30)), (1, (3, 9, 30))],
     "tutorial": (1, (2, 9, 30)), #there can only be one tutorial
     "zoom_link_lec": "https://hku.zoom.us/j/97686555806?pwd=NWxSNVRKTlNDU0NjYTgremxaQ3pldz09",
     "zoom_link_tut": "https://hku.zoom.com.cn/j/2640918958?pwd=UmFpek1YMkUzNTFoL0ljRW84M1VLUT09",
-    "teacher_msg": "SQL Challenge on 3rd March.",
+    "teacher_msg": "There will be 6 or 7 assignments. Problem sets will be assigned on Friday. Completed problem sets are due on the following Sunday. No problem sets will be accepted after the solutions have been posted.",
     #(name, office_address, email_id)
     "lecturer": ("Dr. Ping Luo", "CB326", "pluo@cs.hku.hk")
 }
@@ -41,7 +42,7 @@ def lecturer_layout(course):
     text_color = "white"
     lecturer_info = [
         sg.Column([[sg.Text("Name:", font=bold_text,
-                    justification='left', size=(14, 1), text_color=text_color)]]),
+                    justification='left', size=(6, 1), text_color=text_color)]]),
         sg.Column([[sg.Text("{}".format(course["lecturer"][0]), font=simple_text,
                 justification='left', size=(10, 1), text_color=text_color)]]),
         sg.Column([[sg.Text("Email:", font=bold_text,
@@ -56,9 +57,9 @@ def lecturer_layout(course):
     
     teacher_msg = [
         sg.Column([[sg.Text("Message:", font=bold_text,
-                    justification='right', size=(30, 2), text_color="red")]]),
+                    justification='left', size=(8, 2), text_color="red")]]),
         sg.Column([[sg.Text("{}".format(course["teacher_msg"]), font=simple_text,
-                            justification='left', size=(49, 2), text_color="red")]])
+                            justification='left', size=(73, 2), text_color="red")]])
     ]
 
     lecturer_frame = [
@@ -150,12 +151,16 @@ def get_headline(course, name, date):
 
         [
             sg.Text("{}: {}".format(course["code"], course["title"]), font="Arial 14 bold", text_color="white",
-                            justification='left', size=(50, 1), pad=((0, 0), (5, 0)))
+                            justification='left', size=(50, 1), pad=((0, 0), (8, 0)))
         ],
 
         [
             sg.Text("Welcome back, {}! You have a class of {} scheduled within an hour.".format(
-                name, course["code"]), font="Arial 12", text_color="lightgrey", pad=((0, 0), (0, 7)))
+                name, course["code"]), font="Arial 12", text_color="lightgrey", pad=((2, 0), (1, 3)))
+        ],
+        [
+            sg.Text("{}".format(course["info"]), font="Arial 9 italic",
+                    text_color="lightgrey", size=(115, 3), pad=((6, 0), (0, 3)))
         ]
     ]
     return headline
@@ -190,7 +195,7 @@ def draw_course_window(course, user, login_time, prev_window):
         pad=((15, 0), (10, 10)))]
 
     layout = [
-        headline[0], headline[2], headline[1],
+        headline[0], headline[2], headline[1], headline[3],
         lecturer_frame,
         zoom_link_frame,
         notes_frame,
@@ -199,7 +204,7 @@ def draw_course_window(course, user, login_time, prev_window):
 
     # Create window
     window = sg.Window("{}'s moodle".format(name),
-                layout, size=(900, 600))
+                layout, size=(900, 630))
 
     # Create an event loop
     while True:
