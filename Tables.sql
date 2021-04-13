@@ -10,7 +10,7 @@ CREATE TABLE Student (
 
 CREATE TABLE Course (
   Course_ID VARCHAR(8) NOT NULL,
-  name VARCHAR(40) NOT NULL,
+  name VARCHAR(60) NOT NULL,
   info VARCHAR(300) NOT NULL,
   teachers_message VARCHAR(100) NOT NULL,
   path_to_materials VARCHAR(100),
