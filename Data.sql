@@ -39,7 +39,7 @@ INSERT INTO Takes (ID, Course_ID) VALUES
 ('3035492989','PHYS3450'),
 ('3035492989','PHYS2155');
 
-INSERT INTO Faculty (Faculty_ID, name, email, office_add) VALUES
+INSERT INTO Faculty (Faculty_ID, name, email, office_address) VALUES
 ('001','Luo P.','pluo@cs.hku.hk','CB326'),
 ('002','Yu Y.Z.','yzyu@cs.hku.hk','CB325'),
 ('003','Chim T.W.','twchim@cs.hku.hk','HW519'),

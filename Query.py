@@ -36,10 +36,10 @@ Output:
 def selectCourse(course):
     select_course = """
     SELECT Course_ID, name, info, teachers_message, GROUP_CONCAT(LectTime_Duration), GROUP_CONCAT(Lect_Weekday), 
-    GROUP_CONCAT(LectTime_HH), Lect_Zoom, Tut_Weekday, TutTime_HH, Tut_Zoom, lecturer, office_add, email
+    GROUP_CONCAT(LectTime_HH), Lect_Zoom, Tut_Weekday, TutTime_HH, Tut_Zoom, lecturer, office_address, email
     FROM(SELECT DISTINCT C.*, L.LectTime_Duration, L.Weekday AS Lect_Weekday, L.LectTime_HH, 
     Lec.Zoom AS Lect_Zoom, T.Weekday AS Tut_Weekday, T.TutTime_HH, T.Zoom AS Tut_Zoom, F.name AS lecturer, 
-    F.office_add, F.email
+    F.office_address, F.email
     FROM Course C, LecTime L, Tutorial T, Lecture Lec, Faculty F, Teaches Tea  
     WHERE C.Course_ID = L.Course_ID
     AND C.Course_ID = T.Course_ID 
@@ -48,7 +48,7 @@ def selectCourse(course):
     AND F.Faculty_ID = Tea.Faculty_ID)query1
     WHERE Course_ID ='%s'
     GROUP BY Course_ID, name, info, teachers_message, Lect_Zoom, Tut_Weekday, TutTime_HH, Tut_Zoom, lecturer, 
-    office_add, email
+    office_address, email
     """ % course
 
     c = execute_read_query(select_course)
