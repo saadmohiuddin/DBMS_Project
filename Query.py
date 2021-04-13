@@ -40,7 +40,7 @@ def selectCourse(course):
     FROM(SELECT DISTINCT C.*, L.LectTime_Duration, L.Weekday AS Lect_Weekday, L.LectTime_HH, 
     Lec.Zoom AS Lect_Zoom, T.Weekday AS Tut_Weekday, T.TutTime_HH, T.Zoom AS Tut_Zoom, F.name AS lecturer, 
     F.office_address, F.email
-    FROM Course C, LecTime L, Tutorial T, Lecture Lec, Faculty F, Teaches Tea  
+    FROM Course C, LectTime L, Tutorial T, Lecture Lec, Faculty F, Teaches Tea  
     WHERE C.Course_ID = L.Course_ID
     AND C.Course_ID = T.Course_ID 
     AND C.Course_ID = Lec.Course_ID
@@ -90,7 +90,7 @@ def selectAllCourses():
     GROUP_CONCAT(LectTime_HH), Tut_Weekday, TutTime_HH
     FROM(SELECT DISTINCT C.*, L.LectTime_Duration, L.Weekday AS Lect_Weekday, L.LectTime_HH, 
     T.Weekday AS Tut_Weekday, T.TutTime_HH
-    FROM Course C, LecTime L, Tutorial T  
+    FROM Course C, LectTime L, Tutorial T  
     WHERE C.Course_ID = L.Course_ID 
     AND C.Course_ID = T.Course_ID)query1
     GROUP BY Course_ID, name, Tut_Weekday, TutTime_HH
@@ -140,7 +140,7 @@ def checkClass():
     FROM(
     SELECT DISTINCT S.ID, S.log_in_time as last_login, T.Course_ID, L.LectTime_HH, 
     L.Weekday as Lect_Weekday, Tut.TutTime_HH, Tut.Weekday as Tut_Weekday
-    FROM Student S, Takes T, LecTime L, Tutorial Tut
+    FROM Student S, Takes T, LectTime L, Tutorial Tut
     WHERE S.ID = T.ID
     AND T.Course_ID = L.Course_ID
     AND T.Course_ID = Tut.Course_ID)query2
@@ -179,7 +179,7 @@ Outputs list of course_id of courses with lectures / tutorials within 1 hr
 e.g. ['STAT4609']
 """
 
-# getUser(3035445364)
-# selectCourse('MATH4602')
-# selectAllCourses()
-# checkClass()
+#getUser(3035445364)
+#selectCourse('STAT4609')
+#selectAllCourses()
+#checkClass()
