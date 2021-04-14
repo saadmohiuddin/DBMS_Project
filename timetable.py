@@ -103,6 +103,7 @@ def draw_timetable_window(courses, user, login_time, prev_window):
                 justification='center',
                 size=(800, None))],
         timetable(courses)
+
     ]
 
     # Create the window
