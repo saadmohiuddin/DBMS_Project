@@ -32,7 +32,7 @@ def send_email(course, user, paths, filenames):
 
     subject = "{}'s course info - sent from Moodle, HKU".format(
         course_code)
-    sender_email = "jackgreyson11@gmail.com"
+    sender_email = "hku.moodle2.0@gmail.com"
     receiver_email = user["email"]
     password = "a1b2c3d4!"
 

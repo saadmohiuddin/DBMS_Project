@@ -14,11 +14,13 @@ default_frame_title_color = 'white',
 default_frame_font = "Arial 9 bold"
 default_frame_pad = ((20, 10), (8, 8))
 default_frame_element_justification = 'left'
+number_to_days = ["", "Monday", "Tuesday",
+    "Wednesday", "Thursday", "Friday", "Saturday"]
 
 course = {
     "code": "COMP3278",
-    "title": "Introduction to database management systems",
-    "info": "This course studies the principles, design, administration, and implementation of database management systems. Topics include: entity-relationship model, relational model, relational algebra, database design and normalization, database query languages, indexing schemes, integrity and concurrency control.",
+    "title": "Capstone experience for statistics undergraduates",
+    "course_info": "This course studies the principles, design, administration, and implementation of database management systems. Topics include: entity-relationship model, relational model, relational algebra, database design and normalization, database query languages, indexing schemes, integrity and concurrency control.",
     # there can be more than one lecture (duration, (day_number, starting_hour, starting_min))
     "lecture": [(2, (5, 9, 30)), (1, (3, 9, 30))],
     "tutorial": (1, (2, 9, 30)), #there can only be one tutorial
@@ -57,9 +59,9 @@ def lecturer_layout(course):
     
     teacher_msg = [
         sg.Column([[sg.Text("Message:", font=bold_text,
-                    justification='left', size=(8, 2), text_color="red")]]),
-        sg.Column([[sg.Text("{}".format(course["teacher_msg"]), font=simple_text,
-                            justification='left', size=(73, 2), text_color="red")]])
+                    justification='left', size=(8, 1), text_color="red")]]),
+        sg.Column([[sg.Text("{}".format(course["teacher_msg"]), font="Arial 10",
+                            justification='left', size=(83, 2), text_color="red")]])
     ]
 
     lecturer_frame = [
@@ -75,7 +77,7 @@ def lecturer_layout(course):
     return lecturer_frame
 
 def course_materials_layout(course_materials):
-    pad_inner = ((2, 5), (4, 4))
+    pad_inner = ((3, 5), (4, 4))
     size_listbox = (30, 5)
     frames = []
     types = ["lectures", "tutorials", "assignments"]
@@ -102,11 +104,12 @@ def course_materials_layout(course_materials):
         main_frame_layout.append(
             sg.Column([frame], pad=notes_layout_col_pad)
         )
-    notes_layout=[
+    notes_layout = [
 
         sg.Frame("Course materials", [main_frame_layout],
             element_justification=default_frame_element_justification,
             pad=default_frame_pad,
+            size=(100, 100),
             border_width=default_frame_border_width,
             title_color=default_frame_title_color,
             font=default_frame_font)
@@ -116,13 +119,13 @@ def course_materials_layout(course_materials):
 def zoom_link_layout(course):
     bold_text = "Arial 12 bold"
     simple_text = "Arial 12"
-    size_of_heading = (20, 2)
-    size_of_link = (60, 2)
+    size_of_heading = (17, 2)
+    size_of_link = (64, 2)
     result = [
         sg.Frame("Zoom links", [[sg.Column([[sg.Text("Zoom link for lectures:", font=bold_text,
-                text_color="lightblue", justification='right', size=size_of_heading)],
+                text_color="lightblue", justification='left', size=size_of_heading)],
                 [sg.Text("Zoom link for tutorials:", font=bold_text, text_color="#fd7698",
-                        justification='right', size=size_of_heading)]]),
+                        justification='left', size=size_of_heading)]]),
             sg.Column([[sg.Text(course["zoom_link_lec"], font=simple_text + " underline",
                         justification='left', size=size_of_link, text_color="#787afb",
                         enable_events=True, key="-LEC_ZOOM-", tooltip="Lecture zoom link")],
@@ -159,7 +162,7 @@ def get_headline(course, name, date):
                 name, course["code"]), font="Arial 12", text_color="lightgrey", pad=((2, 0), (1, 3)))
         ],
         [
-            sg.Text("{}".format(course["info"]), font="Arial 9 italic",
+            sg.Text("{}".format(course["course_info"]), font="Arial 9 italic",
                     text_color="lightgrey", size=(115, 3), pad=((6, 0), (0, 3)))
         ]
     ]
@@ -185,6 +188,23 @@ def draw_course_window(course, user, login_time, prev_window):
     lecturer_frame = lecturer_layout(course)
     zoom_link_frame = zoom_link_layout(course)
 
+    name = user["name"]
+
+    # For displaying lecture and tutorial timings
+    lecture_timings = ""
+    for l in course["lecture"]:
+        if l == course["lecture"][0]:
+            lecture_timings += "{}, {}:30-{}:20".format(
+                number_to_days[l[1][0]], l[1][1], l[1][1] + l[0])
+        else:
+            lecture_timings += " | {}, {}:30-{}:20".format(
+                number_to_days[l[1][0]], l[1][1], l[1][1] + l[0])
+
+    t = course["tutorial"]
+    tutorial_timings = "{}, {}:30-{}:20".format(
+        number_to_days[t[1][0]], t[1][1], t[1][1] + t[0])
+
+    # email button plus another column for displaying course's weekly schedule
     send_email_button = [sg.Column(
         [[sg.Button("Send to email address", key="-SEND_EMAIL-",
                     size=(12, 2),
@@ -192,8 +212,23 @@ def draw_course_window(course, user, login_time, prev_window):
                     pad=((1, 1), (1, 1)), enable_events=True,
                     tooltip="Send information\n" + " " * 8 + "to email")]],
         element_justification='center',
-        pad=((15, 0), (10, 10)))]
+        pad=((15, 0), (10, 10))),
+        sg.Column(
+        [[sg.Text(f"Lecture(s): {lecture_timings}",
+                  font="Arial 10 bold",
+                  justification='right',
+                  text_color="lightblue",
+                  pad=((1, 1), (1, 1)))],
+         [sg.Text(f"Tutorials: {tutorial_timings}",
+                  font="Arial 10 bold",
+                  text_color="#fd7698",
+                  justification='right',
+                  pad=((1, 1), (1, 1)))]],
+        element_justification='right',
+        pad=((420, 0), (7, 7)))
+    ]
 
+    # Main layout
     layout = [
         headline[0], headline[2], headline[1], headline[3],
         lecturer_frame,
