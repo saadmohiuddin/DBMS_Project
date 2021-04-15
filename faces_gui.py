@@ -10,6 +10,7 @@ import PySimpleGUI as sg
 from update_login_logout import update_login_time, update_logout_time
 from timetable import draw_timetable_window
 from mainWindowGUI import draw_course_window
+from Query import execute_read_query, getUser, selectCourse, selectAllCourses, time_in_range, checkClass, classes_taken
 
 
 # 1 Create database connection
@@ -108,8 +109,9 @@ while True:
                     If the student has class room within one hour, the corresponding course materials
                         will be presented in the GUI.
                 """
-                update_login_time(current_id) #If this is the case, then we need to keep only the latest login details in DB
+                login_time=update_login_time(current_id)
                 #print(data)
+                user=getUser(current_id)
 
                 # Need to call another MySQL query that gives the email_id as well in addition to what is contained in variable data
                 #user = {"id" : , "email" : , "name": }
@@ -123,9 +125,24 @@ while True:
                         break
 
                     if t_event =="Continue":
-                        # all_classes = sql query by Van
-                        # has_class = mahnoor_function(all_classes)
-                        # if has_class[0]:
+                        has_class=False
+                        all_classes = selectAllCourses(current_id)
+                        classes_in_an_hour = checkClass()
+                        classes=classes_taken(current_id)
+                        current_course='COMP3278'
+                        for courseid in classes:
+                            if courseid in classes_in_an_hour:
+                                current_course=courseid
+                                has_class=True
+                        if(has_class):
+                            coursedetails=selectCourse(current_course)
+                            draw_course_window(coursedetails, user , login_time, transition_window)
+                        else:
+                            draw_timetable_window(all_classes, user, login_time, transition_window)
+
+
+
+
                         #   course = get_full_course_details(has_class[1])
                         #   draw_course_window(course, user, login_time, transition_window)
                         # else:
@@ -134,7 +151,7 @@ while True:
                         # logout_time = date.now()
                         update_logout_time(current_id)
                         break
-
+                    window.close()
 
                 """
                     if the student does not have class at the moment, the GUI presents a personal class
@@ -154,7 +171,8 @@ while True:
                 #print(hello)
                 #engine.say(hello)
 
-
+            win.Close()
+            cap.release()
         # If the face is unrecognized
         else:
             color = (255, 0, 0)

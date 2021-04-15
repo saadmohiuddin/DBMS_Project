@@ -3,8 +3,9 @@ from mysql.connector import Error
 from datetime import datetime, timedelta
 
 
+
 def execute_read_query(query):
-    connection = mysql.connector.connect(host="localhost", user="root", passwd="Mysql7-4", database="dbms")
+    connection = mysql.connector.connect(host="localhost", user="root", passwd="Mysql7-4", database="facerecognition")
     cursor = connection.cursor()
     result = None
     try:
@@ -16,13 +17,13 @@ def execute_read_query(query):
 
 
 def getUser(userid):
-    select_user = "SELECT ID, name, email FROM Student WHERE ID='%s'" % userid
+    select_user = "SELECT name, email FROM Student WHERE ID='%s'" % userid
     user = execute_read_query(select_user)
     if user:
         person = {
-            'userID': user[0][0], 'name': user[0][1], 'email': user[0][2]
+             'name': user[0][0], 'email': user[0][1]
         }
-        print(person)
+        return(person)
     else:
         print("User not found")
 
@@ -35,19 +36,19 @@ Output:
 
 def selectCourse(course):
     select_course = """
-    SELECT Course_ID, name, info, teachers_message, GROUP_CONCAT(LectTime_Duration), GROUP_CONCAT(Lect_Weekday), 
+    SELECT Course_ID, name, info, teachers_message, GROUP_CONCAT(LectTime_Duration), GROUP_CONCAT(Lect_Weekday),
     GROUP_CONCAT(LectTime_HH), Lect_Zoom, Tut_Weekday, TutTime_HH, Tut_Zoom, lecturer, office_address, email
-    FROM(SELECT DISTINCT C.*, L.LectTime_Duration, L.Weekday AS Lect_Weekday, L.LectTime_HH, 
-    Lec.Zoom AS Lect_Zoom, T.Weekday AS Tut_Weekday, T.TutTime_HH, T.Zoom AS Tut_Zoom, F.name AS lecturer, 
+    FROM(SELECT DISTINCT C.*, L.LectTime_Duration, L.Weekday AS Lect_Weekday, L.LectTime_HH,
+    Lec.Zoom AS Lect_Zoom, T.Weekday AS Tut_Weekday, T.TutTime_HH, T.Zoom AS Tut_Zoom, F.name AS lecturer,
     F.office_address, F.email
-    FROM Course C, LectTime L, Tutorial T, Lecture Lec, Faculty F, Teaches Tea  
+    FROM Course C, LectTime L, Tutorial T, Lecture Lec, Faculty F, Teaches Tea
     WHERE C.Course_ID = L.Course_ID
-    AND C.Course_ID = T.Course_ID 
+    AND C.Course_ID = T.Course_ID
     AND C.Course_ID = Lec.Course_ID
     AND C.Course_ID = Tea.Course_ID
     AND F.Faculty_ID = Tea.Faculty_ID)query1
     WHERE Course_ID ='%s'
-    GROUP BY Course_ID, name, info, teachers_message, Lect_Zoom, Tut_Weekday, TutTime_HH, Tut_Zoom, lecturer, 
+    GROUP BY Course_ID, name, info, teachers_message, Lect_Zoom, Tut_Weekday, TutTime_HH, Tut_Zoom, lecturer,
     office_address, email
     """ % course
 
@@ -63,35 +64,34 @@ def selectCourse(course):
     course = {'code': c[0][0], "title": c[0][1], "lecture": res,
               "tutorial": (1, (c[0][8], c[0][9], 30)), "zoom_link_lec": c[0][7], "zoom_link_tut": c[0][10],
               "course_info": c[0][2], "teacher_msg": c[0][3], 'lecturer': (c[0][11], c[0][12], c[0][13])}
-    print(course)
+    return(course)
 
 
 """
 Output:
-{'code': 'STAT4609', 
-'title': 'Big Data Analytics', 
-'lecture': [(3, (4, 13, 30))], 
-'tutorial': (1, (2, 17, 30)), 
-'zoom_link_lec': 'https://hku.zoom.us/j/95828831639', 
-'zoom_link_tut': 'https://hku.zoom.us/j/93095224906', 
-'course_info': 'In the past decade, huge volume of data with highly complicated structure has appeared in every aspect, 
-such as social web logs, e-mails, video, speech recordings, photographs, tweets and others. The efficient extraction of 
-valuable information from these data sources becomes a challenging task. This course focuses on the practical knowledge 
-and skills of some advanced analytics and statistical modeling for solving big data problems.', 
-'teacher_msg': 'Consuming food or beverages of any kind is strictly prohibited during class times. Messes with my flow. 
-Thank you for your understanding.', 
+{'code': 'STAT4609',
+'title': 'Big Data Analytics',
+'lecture': [(3, (4, 13, 30))],
+'tutorial': (1, (2, 17, 30)),
+'zoom_link_lec': 'https://hku.zoom.us/j/95828831639',
+'zoom_link_tut': 'https://hku.zoom.us/j/93095224906',
+'course_info': 'In the past decade, huge volume of data with highly complicated structure has appeared in every aspect,
+such as social web logs, e-mails, video, speech recordings, photographs, tweets and others. The efficient extraction of
+valuable information from these data sources becomes a challenging task. This course focuses on the practical knowledge
+and skills of some advanced analytics and statistical modeling for solving big data problems.',
+'teacher_msg': 'Consuming food or beverages of any kind is strictly prohibited during class times. Messes with my flow.
+Thank you for your understanding.',
 'lecturer': ('Zanila Zhao', 'hku', 'historia15973@gmail.com')}
 """
-
-
-def selectAllCourses():
+'''
+def previousselectAllCourses(): #changed this function to return only courses for current_id
     select_courses = """
-    SELECT Course_ID, name, GROUP_CONCAT(LectTime_Duration), GROUP_CONCAT(Lect_Weekday), 
+    SELECT Course_ID, name, GROUP_CONCAT(LectTime_Duration), GROUP_CONCAT(Lect_Weekday),
     GROUP_CONCAT(LectTime_HH), Tut_Weekday, TutTime_HH
-    FROM(SELECT DISTINCT C.*, L.LectTime_Duration, L.Weekday AS Lect_Weekday, L.LectTime_HH, 
+    FROM(SELECT DISTINCT C.*, L.LectTime_Duration, L.Weekday AS Lect_Weekday, L.LectTime_HH,
     T.Weekday AS Tut_Weekday, T.TutTime_HH
-    FROM Course C, LectTime L, Tutorial T  
-    WHERE C.Course_ID = L.Course_ID 
+    FROM Course C, LectTime L, Tutorial T
+    WHERE C.Course_ID = L.Course_ID
     AND C.Course_ID = T.Course_ID)query1
     GROUP BY Course_ID, name, Tut_Weekday, TutTime_HH
     """
@@ -111,16 +111,48 @@ def selectAllCourses():
                   "tutorial": (1, (c[5], c[6], 30))}
         courseList.append(course)
 
-    print(courseList)
+    return courseList
+'''
+
+
+def selectAllCourses(user_id):
+    select_courses ="""
+    SELECT Course_ID, name, GROUP_CONCAT(LectTime_Duration), GROUP_CONCAT(Lect_Weekday),
+    GROUP_CONCAT(LectTime_HH), Tut_Weekday, TutTime_HH
+    FROM(SELECT DISTINCT C.*, L.LectTime_Duration, L.Weekday AS Lect_Weekday, L.LectTime_HH,
+    T.Weekday AS Tut_Weekday, T.TutTime_HH
+    FROM Course C, LectTime L, Tutorial T, takes TA
+    WHERE C.Course_ID = L.Course_ID AND TA.ID="""+str(user_id)+""" AND TA.Course_ID=C.Course_ID
+    AND C.Course_ID = T.Course_ID)query1
+    GROUP BY Course_ID, name, Tut_Weekday, TutTime_HH
+    """
+    courses = execute_read_query(select_courses)
+    courseList = {}
+    for c in courses:
+        lectDuration = c[2].split(",")
+        lectDay = c[3].split(",")
+        lectHour = c[4].split(",")
+        lectTime = []
+        for i in range(len(lectHour)):
+            time = lectDuration[i] + ',(' + lectDay[i] + ',' + lectHour[i] + ',' + '30' + ')'
+            lectTime.append(time)
+        res = list(map(eval, lectTime))
+
+        course = {'code': c[0], "title": c[1], "lecture": res,
+                  "tutorial": (1, (c[5], c[6], 30))}
+        courseList[course['code']]=course
+
+    return courseList
+
 
 
 """
 Output:
-[{'code': 'CCCH9005', 'title': 'Chinese Cultural Revolution', 'lecture': [(2, (3, 14, 30))], 'tutorial': (1, (3, 10, 30))}, 
-{'code': 'CCHU9074', 'title': 'Beyond Fake News', 'lecture': [(2, (3, 16, 30))], 'tutorial': (1, (3, 18, 30))}, 
-{'code': 'COMP2396', 'title': 'OOP with Java', 'lecture': [(2, (5, 12, 30))], 'tutorial': (1, (2, 12, 30))}, 
-{'code': 'COMP3278', 'title': 'Introduction to database management systems', 'lecture': [(2, (2, 9, 30))], 'tutorial': (1, (5, 9, 30))}, 
-{'code': 'MATH4602', 'title': 'Scietific Computing', 'lecture': [(2, (1, 9, 30)), (1, (4, 9, 30))], 'tutorial': (1, (5, 14, 30))}, 
+[{'code': 'CCCH9005', 'title': 'Chinese Cultural Revolution', 'lecture': [(2, (3, 14, 30))], 'tutorial': (1, (3, 10, 30))},
+{'code': 'CCHU9074', 'title': 'Beyond Fake News', 'lecture': [(2, (3, 16, 30))], 'tutorial': (1, (3, 18, 30))},
+{'code': 'COMP2396', 'title': 'OOP with Java', 'lecture': [(2, (5, 12, 30))], 'tutorial': (1, (2, 12, 30))},
+{'code': 'COMP3278', 'title': 'Introduction to database management systems', 'lecture': [(2, (2, 9, 30))], 'tutorial': (1, (5, 9, 30))},
+{'code': 'MATH4602', 'title': 'Scietific Computing', 'lecture': [(2, (1, 9, 30)), (1, (4, 9, 30))], 'tutorial': (1, (5, 14, 30))},
 {'code': 'STAT4609', 'title': 'Big Data Analytics', 'lecture': [(3, (4, 13, 30))], 'tutorial': (1, (2, 17, 30))}]
 """
 
@@ -135,10 +167,10 @@ def time_in_range(start, end, x):
 
 def checkClass():
     check_class = """
-    SELECT ID, last_login, GROUP_CONCAT(Course_ID), GROUP_CONCAT(LectTime_HH), GROUP_CONCAT(Lect_Weekday), 
+    SELECT ID, last_login, GROUP_CONCAT(Course_ID), GROUP_CONCAT(LectTime_HH), GROUP_CONCAT(Lect_Weekday),
     GROUP_CONCAT(TutTime_HH), GROUP_CONCAT(Tut_Weekday)
     FROM(
-    SELECT DISTINCT S.ID, S.log_in_time as last_login, T.Course_ID, L.LectTime_HH, 
+    SELECT DISTINCT S.ID, S.log_in_time as last_login, T.Course_ID, L.LectTime_HH,
     L.Weekday as Lect_Weekday, Tut.TutTime_HH, Tut.Weekday as Tut_Weekday
     FROM Student S, Takes T, LectTime L, Tutorial Tut
     WHERE S.ID = T.ID
@@ -147,6 +179,7 @@ def checkClass():
     GROUP BY ID, last_login
     """
     classes = execute_read_query(check_class)
+    print(classes)
     haveClass = []
     for c in classes:
         dayOfWeek = c[1].weekday()
@@ -167,19 +200,29 @@ def checkClass():
             if int(day) == dayOfWeek:
                 time_str = class_time[1] + class_time[2]
                 time = datetime.strptime(time_str, '%H%M').time()
+                print("\n\n",time)
                 loginTimeEnd = loginTime + timedelta(hours=1)
                 if time_in_range(loginTime.time(), loginTimeEnd.time(), time):
                     haveClass.append(course[i])
-
-    print(haveClass)
+    print("Class=",haveClass)
+    return(haveClass)
 
 
 """
 Outputs list of course_id of courses with lectures / tutorials within 1 hr
 e.g. ['STAT4609']
 """
+def classes_taken(user_id):
+    query="SELECT Course_ID FROM takes WHERE ID ="+str(user_id)
+    classes= execute_read_query(query)
+    return [i[0] for i in classes]
 
 #getUser(3035445364)
 #selectCourse('STAT4609')
 #selectAllCourses()
 #checkClass()
+#print(classes_taken('3035492989'))
+#print(UpdatedselectAllCourses(3035492989))
+#getUser("3035492989")
+#print(getUser(3035492989))
+checkClass()
