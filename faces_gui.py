@@ -47,19 +47,20 @@ cap = cv2.VideoCapture(0)
 # 3 Define pysimplegui setting
 layout =  [
     [sg.Text('Setting', size=(18,1), font=('Any',18),text_color='#1c86ee' ,justification='left')],
-    [sg.Text('Confidence'), sg.Slider(range=(0,100),orientation='h', resolution=1, default_value=60, size=(15,15), key='confidence')],
+    [sg.Text('Confidence'), sg.Slider(range=(0,100),orientation='h', resolution=1, default_value=22, size=(15,15), key='confidence')],
     [sg.OK(), sg.Cancel()]
       ]
 win = sg.Window('Attendance System',
         default_element_size=(21,1),
         text_justification='right',
         auto_size_text=False).Layout(layout)
-event, values = win.Read()
-if event is None or event =='Cancel':
-    exit()
-args = values
-gui_confidence = args["confidence"]
+#event, values = win.Read()
+#if event is None or event =='Cancel':
+#    exit()
+#args = values
+#gui_confidence = args["confidence"]
 win_started = False
+gui_confidence=22
 
 # 4 Open the camera and start face recognition
 while True:
@@ -113,10 +114,11 @@ while True:
                     If the student has class room within one hour, the corresponding course materials
                         will be presented in the GUI.
                 """
-                #win.Close()
-                #cap.release()
+                win.Close()
+                cap.release()
 
                 login_time=update_login_time(current_id)
+                
                 #print(data)
                 user=getUser(current_id)
 
@@ -164,7 +166,6 @@ while True:
                 while True:
                     t_event,t_values=transition_window.read()
                     if t_event == sg.WIN_CLOSED or t_event=="Logout":
-                        update_logout_time(current_id)
                         break
 
 
@@ -184,27 +185,6 @@ while True:
                     window.close()
                 update_logout_time(current_id)
 
-
-                """
-                    if the student does not have class at the moment, the GUI presents a personal class
-                        timetable for the student.
-
-                """
-
-                #update =  "UPDATE Login SET log_in_time=%s WHERE ID=%s"
-                #val = (str(now), current_id)
-                #cursor.execute(update, val)
-                #update = "UPDATE Student SET login_time=%s WHERE name=%s"
-                #val = (current_time, current_name)
-                #cursor.execute(update, val)
-                #myconn.commit()
-
-                #hello = ("Hello "+ current_id+ ". You logged in")
-                #print(hello)
-                #engine.say(hello)
-
-            win.Close()
-            cap.release()
         # If the face is unrecognized
         else:
             color = (255, 0, 0)
@@ -224,8 +204,8 @@ while True:
         layout = [
             [sg.Text('Attendance System Interface', size=(30,1))],
             [sg.Image(data=imgbytes, key='_IMAGE_')],
-            [sg.Text('Confidence'),
-                sg.Slider(range=(0, 100), orientation='h', resolution=1, default_value=60, size=(15, 15), key='confidence')],
+            #[sg.Text('Confidence'),
+            #    sg.Slider(range=(0, 100), orientation='h', resolution=1, default_value=60, size=(15, 15), key='confidence')],
             [sg.Exit()]
         ]
         win = sg.Window('Attendance System',
@@ -239,8 +219,8 @@ while True:
     event, values = win.Read(timeout=20)
     if event is None or event == 'Exit':
         break
-    gui_confidence = values['confidence']
+    #gui_confidence = values['confidence']
 
 
-win.Close()
+#win.Close()
 cap.release()

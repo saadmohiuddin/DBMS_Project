@@ -37,7 +37,7 @@ def timetable(courses):
                 data[tup[1][1] - 8 +
                             i][tup[1][0]] = "Lecture\n{}".format(v["code"])
                 i += 1
-            
+
         tut_time = v["tutorial"]
         data[tut_time[1][1] -
             8][tut_time[1][0]] = "Tutorial\n{}".format(v["code"])
@@ -71,7 +71,7 @@ def draw_timetable_window(courses, user, login_time):
 
     name = user["name"]
     date = login_time
-    
+
     headline = [
         [
             sg.Column([[sg.Text("{}".format(name), font="Arial 14 bold",
@@ -81,7 +81,8 @@ def draw_timetable_window(courses, user, login_time):
         ],
         [
             sg.Text("Welcome back, {}! You have no classes scheduled within at least an hour.".format(
-                name), font="Arial 12", text_color="lightgrey", pad=((0, 0), (5, 5)))
+                name), font="Arial 12", text_color="lightgrey", pad=((0, 0), (5, 5))) ,
+            sg.Button("Logout", size=(10, 1), pad=((150, 10), (8, 8)), font="Arial 9 bold")
         ]
     ]
 
@@ -91,7 +92,7 @@ def draw_timetable_window(courses, user, login_time):
              pad=((0, 0), (10, 10)),
             justification='center',
             size=(800, None))]
-    
+
     layout3 = [
         headline[0],
         headline[1],
@@ -114,7 +115,7 @@ def draw_timetable_window(courses, user, login_time):
     while True:
         event3, values3 = window3.read()
 
-        if event3 == sg.WIN_CLOSED:
+        if event3 == sg.WIN_CLOSED or event3 == "Logout":
             break
 
 if __name__ == '__main__':

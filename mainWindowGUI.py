@@ -56,7 +56,7 @@ def lecturer_layout(course):
         sg.Column([[sg.Text("{}".format(course["lecturer"][1]), font=simple_text,
                 justification='left', size=(7, 1), text_color=text_color)]])
     ]
-    
+
     teacher_msg = [
         sg.Column([[sg.Text("Message:", font=bold_text,
                     justification='left', size=(8, 1), text_color="red")]]),
@@ -159,7 +159,8 @@ def get_headline(course, name, date):
 
         [
             sg.Text("Welcome back, {}! You have a class of {} scheduled within an hour.".format(
-                name, course["code"]), font="Arial 12", text_color="lightgrey", pad=((2, 0), (1, 3)))
+                name, course["code"]), font="Arial 12", text_color="lightgrey", pad=((2, 0), (1, 3))) ,
+            sg.Button("Logout", size=(10, 1), pad=((130, 10), (0, 0)), font="Arial 9 bold")
         ],
         [
             sg.Text("{}".format(course["course_info"]), font="Arial 9 italic",
@@ -245,9 +246,9 @@ def draw_course_window(course, user, login_time):
     while True:
         event, values = window.read()
 
-        if event == sg.WIN_CLOSED:
+        if event == sg.WIN_CLOSED or event == "Logout":
             break
-        
+
         # when user clicks "send email" button
         if event == "-SEND_EMAIL-":
             send_email(course, user, fullpaths, nameonly)

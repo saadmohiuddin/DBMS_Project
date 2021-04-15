@@ -152,13 +152,13 @@ def checkClass(userid):
     GROUP BY last_login
     """ % userid
     classes = execute_read_query(check_class)
-    print(classes,"\n\n\n")
+    #print(classes,"\n\n\n")
     haveClass = []
     for c in classes:
         dayOfWeek = c[0].weekday()+1
         loginTime = c[0]
         course = c[1].split(",")
-        print("course=", course)
+        #print("course=", course)
         lectHour = c[2].split(",")
         lectDay = c[3].split(",")
         tutHour = c[4].split(",")
@@ -170,15 +170,15 @@ def checkClass(userid):
             classTime.append(tutDay[i] + ',' + tutHour[i] + ',' + '30')
             #workaround to include entries for course for each tuthour
             course.append(c[1].split(",")[i])
-        print("\n updated course=",course)
+        #print("\n updated course=",course)
         for i in range(len(classTime)):
             class_time = classTime[i].split(",")
-            print("classtime[%s]="%i,class_time, course[i])
+            #print("classtime[%s]="%i,class_time, course[i])
             day = class_time[0]
             if int(day) == dayOfWeek:
                 time_str = class_time[1] + class_time[2]
                 time = datetime.strptime(time_str, '%H%M').time()
-                print("\n",time)
+                #print("\n",time)
                 loginTimeEnd = loginTime + timedelta(hours=1)
                 if time_in_range(loginTime.time(), loginTimeEnd.time(), time):
                     haveClass.append(course[i])

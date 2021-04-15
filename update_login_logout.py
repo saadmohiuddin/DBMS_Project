@@ -13,6 +13,7 @@ cursor = myconn.cursor()
 
 def update_login_time(current_id):
     time = datetime.now()
+    #time=datetime(2021,4,15,15,0,0) # for testing case:class in an hour
     update =  "UPDATE student SET log_in_time=%s WHERE ID=%s"
     val = (str(time), current_id)
     cursor.execute(update, val)
