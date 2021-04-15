@@ -67,7 +67,7 @@ def timetable(courses):
     ]
     return tt
 
-def draw_timetable_window(courses, user, login_time, prev_window):
+def draw_timetable_window(courses, user, login_time):
 
     name = user["name"]
     date = login_time
@@ -113,10 +113,9 @@ def draw_timetable_window(courses, user, login_time, prev_window):
     # Create an event loop
     while True:
         event3, values3 = window3.read()
-        if prev_window != None:
-            prev_window.close()
+
         if event3 == sg.WIN_CLOSED:
             break
 
 if __name__ == '__main__':
-    draw_timetable_window(courses, person, date, None)
+    draw_timetable_window(courses, person, date)
