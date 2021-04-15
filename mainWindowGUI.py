@@ -168,7 +168,7 @@ def get_headline(course, name, date):
     ]
     return headline
 
-def draw_course_window(course, user, login_time, prev_window):
+def draw_course_window(course, user, login_time):
     name = user["name"]
     date = login_time
 
@@ -244,8 +244,7 @@ def draw_course_window(course, user, login_time, prev_window):
     # Create an event loop
     while True:
         event, values = window.read()
-        if prev_window != None:
-            prev_window.close()
+
         if event == sg.WIN_CLOSED:
             break
         
@@ -274,4 +273,4 @@ def draw_course_window(course, user, login_time, prev_window):
             webbrowser.open(course["zoom_link_tut"])
 
 if __name__ == '__main__':
-    draw_course_window(course, person, date, None)
+    draw_course_window(course, person, date)

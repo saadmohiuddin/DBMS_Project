@@ -23,13 +23,13 @@ def getUser(userid):
         person = {
              'name': user[0][0], 'email': user[0][1]
         }
-        return(person)
+        return person
     else:
-        print("User not found")
+        return
 
 
 """
-Output:
+>>> getUser(3035445364)
 {'userID': '3035445364', 'name': 'Saalim Mohamed Abdulla', 'email': 'mistermiyagi15973@gmail.com'}
 """
 
@@ -64,11 +64,12 @@ def selectCourse(course):
     course = {'code': c[0][0], "title": c[0][1], "lecture": res,
               "tutorial": (1, (c[0][8], c[0][9], 30)), "zoom_link_lec": c[0][7], "zoom_link_tut": c[0][10],
               "course_info": c[0][2], "teacher_msg": c[0][3], 'lecturer': (c[0][11], c[0][12], c[0][13])}
-    return(course)
+
+    return course
 
 
 """
-Output:
+>>> selectCourse('STAT4609')
 {'code': 'STAT4609',
 'title': 'Big Data Analytics',
 'lecture': [(3, (4, 13, 30))],
@@ -83,18 +84,21 @@ and skills of some advanced analytics and statistical modeling for solving big d
 Thank you for your understanding.',
 'lecturer': ('Zanila Zhao', 'hku', 'historia15973@gmail.com')}
 """
-'''
-def previousselectAllCourses(): #changed this function to return only courses for current_id
+
+
+def selectAllCourses(userid):
     select_courses = """
     SELECT Course_ID, name, GROUP_CONCAT(LectTime_Duration), GROUP_CONCAT(Lect_Weekday),
     GROUP_CONCAT(LectTime_HH), Tut_Weekday, TutTime_HH
     FROM(SELECT DISTINCT C.*, L.LectTime_Duration, L.Weekday AS Lect_Weekday, L.LectTime_HH,
     T.Weekday AS Tut_Weekday, T.TutTime_HH
-    FROM Course C, LectTime L, Tutorial T
+    FROM Course C, LectTime L, Tutorial T, Takes Ta
     WHERE C.Course_ID = L.Course_ID
-    AND C.Course_ID = T.Course_ID)query1
+    AND C.Course_ID = T.Course_ID
+    AND C.Course_ID = Ta.Course_ID
+    AND Ta.ID = '%s')query1
     GROUP BY Course_ID, name, Tut_Weekday, TutTime_HH
-    """
+    """ % userid
     courses = execute_read_query(select_courses)
     courseList = []
     for c in courses:
@@ -165,30 +169,31 @@ def time_in_range(start, end, x):
         return start <= x or x <= end
 
 
-def checkClass():
+def checkClass(userid):
     check_class = """
-    SELECT ID, last_login, GROUP_CONCAT(Course_ID), GROUP_CONCAT(LectTime_HH), GROUP_CONCAT(Lect_Weekday),
+    SELECT last_login, GROUP_CONCAT(Course_ID), GROUP_CONCAT(LectTime_HH), GROUP_CONCAT(Lect_Weekday),
     GROUP_CONCAT(TutTime_HH), GROUP_CONCAT(Tut_Weekday)
     FROM(
-    SELECT DISTINCT S.ID, S.log_in_time as last_login, T.Course_ID, L.LectTime_HH,
+    SELECT DISTINCT S.log_in_time as last_login, T.Course_ID, L.LectTime_HH,
     L.Weekday as Lect_Weekday, Tut.TutTime_HH, Tut.Weekday as Tut_Weekday
     FROM Student S, Takes T, LectTime L, Tutorial Tut
     WHERE S.ID = T.ID
+    AND S.ID = '%s'
     AND T.Course_ID = L.Course_ID
     AND T.Course_ID = Tut.Course_ID)query2
-    GROUP BY ID, last_login
-    """
+    GROUP BY last_login
+    """ % userid
     classes = execute_read_query(check_class)
     print(classes)
     haveClass = []
     for c in classes:
-        dayOfWeek = c[1].weekday()
-        loginTime = c[1]
-        course = c[2].split(",")
-        lectHour = c[3].split(",")
-        lectDay = c[4].split(",")
-        tutHour = c[5].split(",")
-        tutDay = c[6].split(",")
+        dayOfWeek = c[0].weekday()
+        loginTime = c[0]
+        course = c[1].split(",")
+        lectHour = c[2].split(",")
+        lectDay = c[3].split(",")
+        tutHour = c[4].split(",")
+        tutDay = c[5].split(",")
         classTime = []
         for i in range(len(lectHour)):
             classTime.append(lectDay[i] + ',' + lectHour[i] + ',' + '30')
@@ -204,12 +209,13 @@ def checkClass():
                 loginTimeEnd = loginTime + timedelta(hours=1)
                 if time_in_range(loginTime.time(), loginTimeEnd.time(), time):
                     haveClass.append(course[i])
-    print("Class=",haveClass)
-    return(haveClass)
+
+    return haveClass
 
 
 """
-Outputs list of course_id of courses with lectures / tutorials within 1 hr
+>>> checkClass(3035445364)
+Returns list of course_id of courses with lectures or tutorials within 1 hr for user with userid = 3035445364
 e.g. ['STAT4609']
 """
 def classes_taken(user_id):
@@ -225,4 +231,4 @@ def classes_taken(user_id):
 #print(UpdatedselectAllCourses(3035492989))
 #getUser("3035492989")
 #print(getUser(3035492989))
-checkClass()
+#checkClass()
