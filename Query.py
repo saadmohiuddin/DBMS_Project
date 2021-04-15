@@ -22,13 +22,13 @@ def getUser(userid):
         person = {
             'userID': user[0][0], 'name': user[0][1], 'email': user[0][2]
         }
-        print(person)
+        return person
     else:
-        print("User not found")
+        return
 
 
 """
-Output:
+>>> getUser(3035445364)
 {'userID': '3035445364', 'name': 'Saalim Mohamed Abdulla', 'email': 'mistermiyagi15973@gmail.com'}
 """
 
@@ -63,11 +63,12 @@ def selectCourse(course):
     course = {'code': c[0][0], "title": c[0][1], "lecture": res,
               "tutorial": (1, (c[0][8], c[0][9], 30)), "zoom_link_lec": c[0][7], "zoom_link_tut": c[0][10],
               "course_info": c[0][2], "teacher_msg": c[0][3], 'lecturer': (c[0][11], c[0][12], c[0][13])}
-    print(course)
+
+    return course
 
 
 """
-Output:
+>>> selectCourse('STAT4609')
 {'code': 'STAT4609', 
 'title': 'Big Data Analytics', 
 'lecture': [(3, (4, 13, 30))], 
@@ -84,17 +85,19 @@ Thank you for your understanding.',
 """
 
 
-def selectAllCourses():
+def selectAllCourses(userid):
     select_courses = """
     SELECT Course_ID, name, GROUP_CONCAT(LectTime_Duration), GROUP_CONCAT(Lect_Weekday), 
     GROUP_CONCAT(LectTime_HH), Tut_Weekday, TutTime_HH
     FROM(SELECT DISTINCT C.*, L.LectTime_Duration, L.Weekday AS Lect_Weekday, L.LectTime_HH, 
     T.Weekday AS Tut_Weekday, T.TutTime_HH
-    FROM Course C, LectTime L, Tutorial T  
+    FROM Course C, LectTime L, Tutorial T, Takes Ta  
     WHERE C.Course_ID = L.Course_ID 
-    AND C.Course_ID = T.Course_ID)query1
+    AND C.Course_ID = T.Course_ID
+    AND C.Course_ID = Ta.Course_ID
+    AND Ta.ID = '%s')query1
     GROUP BY Course_ID, name, Tut_Weekday, TutTime_HH
-    """
+    """ % userid
     courses = execute_read_query(select_courses)
     courseList = []
     for c in courses:
@@ -111,16 +114,12 @@ def selectAllCourses():
                   "tutorial": (1, (c[5], c[6], 30))}
         courseList.append(course)
 
-    print(courseList)
+    return courseList
 
 
 """
-Output:
-[{'code': 'CCCH9005', 'title': 'Chinese Cultural Revolution', 'lecture': [(2, (3, 14, 30))], 'tutorial': (1, (3, 10, 30))}, 
-{'code': 'CCHU9074', 'title': 'Beyond Fake News', 'lecture': [(2, (3, 16, 30))], 'tutorial': (1, (3, 18, 30))}, 
-{'code': 'COMP2396', 'title': 'OOP with Java', 'lecture': [(2, (5, 12, 30))], 'tutorial': (1, (2, 12, 30))}, 
-{'code': 'COMP3278', 'title': 'Introduction to database management systems', 'lecture': [(2, (2, 9, 30))], 'tutorial': (1, (5, 9, 30))}, 
-{'code': 'MATH4602', 'title': 'Scietific Computing', 'lecture': [(2, (1, 9, 30)), (1, (4, 9, 30))], 'tutorial': (1, (5, 14, 30))}, 
+>>> selectAllCourses(3035445364)
+[{'code': 'COMP3278', 'title': 'Introduction to database management', 'lecture': [(2, (2, 9, 30))], 'tutorial': (1, (5, 9, 30))}, 
 {'code': 'STAT4609', 'title': 'Big Data Analytics', 'lecture': [(3, (4, 13, 30))], 'tutorial': (1, (2, 17, 30))}]
 """
 
@@ -133,29 +132,30 @@ def time_in_range(start, end, x):
         return start <= x or x <= end
 
 
-def checkClass():
+def checkClass(userid):
     check_class = """
-    SELECT ID, last_login, GROUP_CONCAT(Course_ID), GROUP_CONCAT(LectTime_HH), GROUP_CONCAT(Lect_Weekday), 
+    SELECT last_login, GROUP_CONCAT(Course_ID), GROUP_CONCAT(LectTime_HH), GROUP_CONCAT(Lect_Weekday), 
     GROUP_CONCAT(TutTime_HH), GROUP_CONCAT(Tut_Weekday)
     FROM(
-    SELECT DISTINCT S.ID, S.log_in_time as last_login, T.Course_ID, L.LectTime_HH, 
+    SELECT DISTINCT S.log_in_time as last_login, T.Course_ID, L.LectTime_HH, 
     L.Weekday as Lect_Weekday, Tut.TutTime_HH, Tut.Weekday as Tut_Weekday
     FROM Student S, Takes T, LectTime L, Tutorial Tut
     WHERE S.ID = T.ID
+    AND S.ID = '%s'
     AND T.Course_ID = L.Course_ID
     AND T.Course_ID = Tut.Course_ID)query2
-    GROUP BY ID, last_login
-    """
+    GROUP BY last_login
+    """ % userid
     classes = execute_read_query(check_class)
     haveClass = []
     for c in classes:
-        dayOfWeek = c[1].weekday()
-        loginTime = c[1]
-        course = c[2].split(",")
-        lectHour = c[3].split(",")
-        lectDay = c[4].split(",")
-        tutHour = c[5].split(",")
-        tutDay = c[6].split(",")
+        dayOfWeek = c[0].weekday()
+        loginTime = c[0]
+        course = c[1].split(",")
+        lectHour = c[2].split(",")
+        lectDay = c[3].split(",")
+        tutHour = c[4].split(",")
+        tutDay = c[5].split(",")
         classTime = []
         for i in range(len(lectHour)):
             classTime.append(lectDay[i] + ',' + lectHour[i] + ',' + '30')
@@ -171,15 +171,11 @@ def checkClass():
                 if time_in_range(loginTime.time(), loginTimeEnd.time(), time):
                     haveClass.append(course[i])
 
-    print(haveClass)
+    return haveClass
 
 
 """
-Outputs list of course_id of courses with lectures / tutorials within 1 hr
+>>> checkClass(3035445364)
+Returns list of course_id of courses with lectures or tutorials within 1 hr for user with userid = 3035445364
 e.g. ['STAT4609']
 """
-
-#getUser(3035445364)
-#selectCourse('STAT4609')
-#selectAllCourses()
-#checkClass()
