@@ -18,7 +18,7 @@ def update_login_time(current_id):
     cursor.execute(update, val)
     myconn.commit()
 
-    return
+    return time
 
 
 def update_logout_time(current_id):
@@ -28,4 +28,4 @@ def update_logout_time(current_id):
     cursor.execute(update, val)
     myconn.commit()
 
-    return
+    return time
