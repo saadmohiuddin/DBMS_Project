@@ -100,37 +100,6 @@ def selectAllCourses(userid):
     GROUP BY Course_ID, name, Tut_Weekday, TutTime_HH
     """ % userid
     courses = execute_read_query(select_courses)
-    courseList = []
-    for c in courses:
-        lectDuration = c[2].split(",")
-        lectDay = c[3].split(",")
-        lectHour = c[4].split(",")
-        lectTime = []
-        for i in range(len(lectHour)):
-            time = lectDuration[i] + ',(' + lectDay[i] + ',' + lectHour[i] + ',' + '30' + ')'
-            lectTime.append(time)
-        res = list(map(eval, lectTime))
-
-        course = {'code': c[0], "title": c[1], "lecture": res,
-                  "tutorial": (1, (c[5], c[6], 30))}
-        courseList.append(course)
-
-    return courseList
-'''
-
-
-def selectAllCourses(user_id):
-    select_courses ="""
-    SELECT Course_ID, name, GROUP_CONCAT(LectTime_Duration), GROUP_CONCAT(Lect_Weekday),
-    GROUP_CONCAT(LectTime_HH), Tut_Weekday, TutTime_HH
-    FROM(SELECT DISTINCT C.*, L.LectTime_Duration, L.Weekday AS Lect_Weekday, L.LectTime_HH,
-    T.Weekday AS Tut_Weekday, T.TutTime_HH
-    FROM Course C, LectTime L, Tutorial T, takes TA
-    WHERE C.Course_ID = L.Course_ID AND TA.ID="""+str(user_id)+""" AND TA.Course_ID=C.Course_ID
-    AND C.Course_ID = T.Course_ID)query1
-    GROUP BY Course_ID, name, Tut_Weekday, TutTime_HH
-    """
-    courses = execute_read_query(select_courses)
     courseList = {}
     for c in courses:
         lectDuration = c[2].split(",")
@@ -147,7 +116,6 @@ def selectAllCourses(user_id):
         courseList[course['code']]=course
 
     return courseList
-
 
 
 """
@@ -184,12 +152,13 @@ def checkClass(userid):
     GROUP BY last_login
     """ % userid
     classes = execute_read_query(check_class)
-    print(classes)
+    print(classes,"\n\n\n")
     haveClass = []
     for c in classes:
-        dayOfWeek = c[0].weekday()
+        dayOfWeek = c[0].weekday()+1
         loginTime = c[0]
         course = c[1].split(",")
+        print("course=", course)
         lectHour = c[2].split(",")
         lectDay = c[3].split(",")
         tutHour = c[4].split(",")
@@ -199,13 +168,17 @@ def checkClass(userid):
             classTime.append(lectDay[i] + ',' + lectHour[i] + ',' + '30')
         for i in range(len(tutHour)):
             classTime.append(tutDay[i] + ',' + tutHour[i] + ',' + '30')
+            #workaround to include entries for course for each tuthour
+            course.append(c[1].split(",")[i])
+        print("\n updated course=",course)
         for i in range(len(classTime)):
             class_time = classTime[i].split(",")
+            print("classtime[%s]="%i,class_time, course[i])
             day = class_time[0]
             if int(day) == dayOfWeek:
                 time_str = class_time[1] + class_time[2]
                 time = datetime.strptime(time_str, '%H%M').time()
-                print("\n\n",time)
+                print("\n",time)
                 loginTimeEnd = loginTime + timedelta(hours=1)
                 if time_in_range(loginTime.time(), loginTimeEnd.time(), time):
                     haveClass.append(course[i])
@@ -213,22 +186,9 @@ def checkClass(userid):
     return haveClass
 
 
+
 """
 >>> checkClass(3035445364)
 Returns list of course_id of courses with lectures or tutorials within 1 hr for user with userid = 3035445364
 e.g. ['STAT4609']
 """
-def classes_taken(user_id):
-    query="SELECT Course_ID FROM takes WHERE ID ="+str(user_id)
-    classes= execute_read_query(query)
-    return [i[0] for i in classes]
-
-#getUser(3035445364)
-#selectCourse('STAT4609')
-#selectAllCourses()
-#checkClass()
-#print(classes_taken('3035492989'))
-#print(UpdatedselectAllCourses(3035492989))
-#getUser("3035492989")
-#print(getUser(3035492989))
-#checkClass()

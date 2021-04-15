@@ -13,7 +13,7 @@ cursor = myconn.cursor()
 
 def update_login_time(current_id):
     time = datetime.now()
-    update =  "UPDATE login SET log_in_time=%s WHERE ID=%s"
+    update =  "UPDATE student SET log_in_time=%s WHERE ID=%s"
     val = (str(time), current_id)
     cursor.execute(update, val)
     myconn.commit()
@@ -23,7 +23,7 @@ def update_login_time(current_id):
 
 def update_logout_time(current_id):
     time = datetime.now()
-    update =  "UPDATE login SET log_out_time=%s WHERE ID=%s"
+    update =  "UPDATE student SET log_out_time=%s WHERE ID=%s"
     val = (str(time), current_id)
     cursor.execute(update, val)
     myconn.commit()
