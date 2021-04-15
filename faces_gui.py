@@ -10,7 +10,7 @@ import PySimpleGUI as sg
 from update_login_logout import update_login_time, update_logout_time
 from timetable import draw_timetable_window
 from mainWindowGUI import draw_course_window
-
+sg.theme('DarkBlue6')
 
 # 1 Create database connection
 myconn = mysql.connector.connect(host="localhost", user="root", passwd="Mysql7-4", database="facerecognition")
@@ -108,33 +108,66 @@ while True:
                     If the student has class room within one hour, the corresponding course materials
                         will be presented in the GUI.
                 """
-                update_login_time(current_id) #If this is the case, then we need to keep only the latest login details in DB
-                #print(data)
+                date = datetime.now().strftime("at %H:%M:%S on %d %B, %Y")
+                #If this is the case, then we need to keep only the latest login details in DB
+                update_login_time(current_id)
+                user = getUser(current_id)
 
                 # Need to call another MySQL query that gives the email_id as well in addition to what is contained in variable data
                 #user = {"id" : , "email" : , "name": }
-                transition_layout=[[sg.Text("You have logged in successfully, " + data[1])], [sg.Button("Continue")], [sg.Button("Logout")]]
-                transition_window = sg.Window("Transition", transition_layout, size=(400, 300))
-                cv2.destroyAllWindows() # Try to close once we open the next one for smoother transition
+                
+                line1 = [sg.Text(text="--------------------" * 9,
+                         font='Arial 12 bold',
+                         text_color='#cdb6cd',
+                         pad=((0, 0), (145, 0)),
+                    justification='center',
+                    size=(800, None))]
+                line2 = [sg.Text(text="--------------------" * 9,
+                         font='Arial 12 bold',
+                         text_color='#cdb6cd',
+                         pad=((0, 0), (0, 100)),
+                    justification='center',
+                    size=(800, None))]
+                
+                transition_layout = [
+                    [
+                        sg.Column([[sg.Text("You have logged in successfully, {}!".format(user["name"]), font="Arial 14 bold",
+                                justification='left')]]),
+                        sg.Column([[sg.Text("Logged in: {}".format(date), font="Arial 10 italic",
+                                justification='right', size=(70, 1))]])
+                    ],
+
+                    line1,
+                    [sg.Text("HKU MOODLE 2.0", font="Arial 65 italic",
+                             text_color="lightgrey", pad=((70, 50), (10, 10)))], line2,
+
+                    [sg.Button("Continue", size=(10, 2), pad=((650, 30), (80, 8)), font="Arial 9 bold"),
+                               sg.Button("Logout", size=(10, 2), pad=((0, 10), (80, 8)), font="Arial 9 bold")]
+                ]
+                
+                transition_window = sg.Window("{}'s moodle".format(
+                    name), transition_layout, size=(900, 600))
+                # Try to close once we open the next one for smoother transition
+                cv2.destroyAllWindows()
                 while True:
                     t_event,t_values=transition_window.read()
                     if t_event == sg.WIN_CLOSED or t_event=="Logout":
                         update_logout_time(current_id)
                         break
-
-                    if t_event =="Continue":
-                        # all_classes = sql query by Van
-                        # has_class = mahnoor_function(all_classes)
-                        # if has_class[0]:
-                        #   course = get_full_course_details(has_class[1])
-                        #   draw_course_window(course, user, login_time, transition_window)
-                        # else:
-                        #   draw_timetable_window(all_classes, user, login_time, transition_window)
+                    if t_event == "Continue":
+                        transition_window.close()
+                        classInHour = checkClass()
+                        if len(classInHour) > 0:
+                            course = selectCourse(classInHour[0])
+                            draw_course_window(course, user, login_time)
+                        else:
+                            all_classes = selectAllCourses()
+                            draw_timetable_window(all_classes,
+                                                 user, login_time)
                         #
-                        # logout_time = date.now()
-                        update_logout_time(current_id)
+                        # logout_time = date.now()                        
                         break
-
+                update_logout_time(current_id)
 
                 """
                     if the student does not have class at the moment, the GUI presents a personal class
