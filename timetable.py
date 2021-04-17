@@ -33,7 +33,6 @@ def timetable(courses):
         for tup in t:
             i = 0
             while i < tup[0]:
-                print(tup)
                 data[tup[1][1] - 8 +
                             i][tup[1][0]] = "Lecture\n{}".format(v["code"])
                 i += 1
@@ -81,8 +80,9 @@ def draw_timetable_window(courses, user, login_time):
         ],
         [
             sg.Text("Welcome back, {}! You have no classes scheduled within at least an hour.".format(
-                name), font="Arial 12", text_color="lightgrey", pad=((0, 0), (5, 5))) ,
-            sg.Button("Logout", size=(10, 1), pad=((150, 10), (8, 8)), font="Arial 9 bold")
+                name), font="Arial 12", text_color="lightgrey", pad=((0, 0), (5, 5))),
+            sg.Button("Logout", size=(10, 1), pad=((150, 10), (8, 8)),
+                      font="Arial 9 bold", tooltip="Logout")
         ]
     ]
 
@@ -116,6 +116,7 @@ def draw_timetable_window(courses, user, login_time):
         event3, values3 = window3.read()
 
         if event3 == sg.WIN_CLOSED or event3 == "Logout":
+            window3.close()
             break
 
 if __name__ == '__main__':
