@@ -5,6 +5,13 @@ INSERT INTO Student (ID, name, email, log_in_time, log_out_time) VALUES
 ('3035492989','Mohiuddin Saad','jmcroissant15973@gmail.com','2021-03-12 17:25:00','2021-03-12 18:05:00'),
 ('3035436399','Vanessa Leung Jia Min','historia15973@gmail.com','2021-03-13 11:52:00','2021-03-13 12:05:00');
 
+INSERT INTO StudentType (ID, StudentType) VALUES
+('3035445364','Full Time'),
+('3035445974','Full Time'),
+('3035602821','Full Time'),
+('3035492989','Full Time'),
+('3035436399','Full Time');
+
 INSERT INTO Course (Course_ID, path_to_materials, name, info, teachers_message) VALUES
 ('STAT4609','/notes/STAT4609','Big Data Analytics','In the past decade, huge volume of data with highly complicated structure has appeared in every aspect, such as social web logs, photographs, tweets and others. This course focuses on the practical knowledge and skills of advanced analytics and statistical modeling for solving big data problems.','Consuming food or beverages of any kind is strictly prohibited during class times.'),
 ('STAT4710','/notes/STAT4710','Capstone experience for statistics undergraduates','This project-based course aims to provide students with capstone experience to formulate and investigate real life problems in multiple areas of research by integrating and applying the statistical theories and quantitative techniques learnt in their junior university years.','Upcoming meeting on 1st April. Feel free to send an email if you have any queries.'),
@@ -69,35 +76,62 @@ INSERT INTO Teaches (Course_ID, Faculty_ID) VALUES
 ('MATH4602','012'),
 ('STAT4609','013');
 
-INSERT INTO Lecture (Course_ID, Zoom) VALUES
-('STAT4609','https://hku.zoom.us/j/95828831639'),
-('COMP3314','https://hku.zoom.us/j/92125651881?pwd=Q0t2WTdrc1ZTMnVOTVAyak82bmpGdz09'),
-('COMP3278','https://hku.zoom.us/j/97686555806?pwd=NWxSNVRKTlNDU0NjYTgremxaQ3pldz09'),
-('MATH4602','https://hku.zoom.us/j/99227888994?pwd=eXZLQkRDM2l6bXU4R2VJZDBNQlNhQT09'),
-('CCHU9074','https://hku.zoom.us/j/91517172449?pwd=RXppbW5ldVdZZ2JvWjlJV1FhM2pDQT09'),
-('COMP2396','https://hku.zoom.us/j/97902227890?pwd=QnlWWHdudGY0K21GeHhTa3JDQ3Urdz09'),
-('CCCH9005','https://hku.zoom.us/j/3531454530?pwd=VUpWMUhmck1yMjE5TUhuU0pGWHBmUT09'),
-('PHYS3450','https://zoom.us/j/8237642261#success'),
-('PHYS2155','https://zoom.us/j/4782746197#success');
+INSERT INTO Classes (Course_ID, ClassID) VALUES
+('COMP3278','01'),
+('COMP3314','01'),
+('COMP2396','01'),
+('CCHU9074','01'),
+('STAT3621','01'),
+('STAT3622','01'),
+('AMER2056','01'),
+('CCCH9005','01'),
+('PHYS3450','01'),
+('PHYS3450','02'),
+('STAT4710','01'),
+('PHYS2155','01'),
+('PHYS2155','02'),
+('MATH4602','01'),
+('MATH4602','02'),
+('STAT4609','01'),
+('STAT4609','02'),
+('COMP3278','02'),
+('MATH4602','03'),
+('CCHU9074','02'),
+('COMP2396','02'),
+('CCCH9005','02');
 
-INSERT INTO LectTime (Course_ID, LectTime_HH, LectTime_Duration, Weekday) VALUES
-('STAT4609',13,3,4),
-('COMP3314',14,3,1),
-('COMP3278',9,2,2),
-('MATH4602',9,2,1),
-('MATH4602',9,1,4),
-('CCHU9074',16,2,3),
-('COMP2396',12,2,5),
-('CCCH9005',14,2,3),
-('PHYS3450',3,1,2),
-('PHYS3450',3,2,5),
-('PHYS2155',12,1,2),
-('PHYS2155',12,2,5);
+INSERT INTO Lecture (Course_ID, ClassID, Zoom) VALUES
+('STAT4609','01','https://hku.zoom.us/j/95828831639'),
+('COMP3314','01','https://hku.zoom.us/j/92125651881?pwd=Q0t2WTdrc1ZTMnVOTVAyak82bmpGdz09'),
+('COMP3278','01','https://hku.zoom.us/j/97686555806?pwd=NWxSNVRKTlNDU0NjYTgremxaQ3pldz09'),
+('MATH4602','01','https://hku.zoom.us/j/99227888994?pwd=eXZLQkRDM2l6bXU4R2VJZDBNQlNhQT09'),
+('MATH4602','02','https://hku.zoom.us/j/99227888994?pwd=eXZLQkRDM2l6bXU4R2VJZDBNQlNhQT09'),
+('CCHU9074','01','https://hku.zoom.us/j/91517172449?pwd=RXppbW5ldVdZZ2JvWjlJV1FhM2pDQT09'),
+('COMP2396','01','https://hku.zoom.us/j/97902227890?pwd=QnlWWHdudGY0K21GeHhTa3JDQ3Urdz09'),
+('CCCH9005','01','https://hku.zoom.us/j/3531454530?pwd=VUpWMUhmck1yMjE5TUhuU0pGWHBmUT09'),
+('PHYS3450','01','https://zoom.us/j/8237642261#success'),
+('PHYS3450','02','https://zoom.us/j/8237642261#success'),
+('PHYS2155','01','https://zoom.us/j/4782746197#success'),
+('PHYS2155','02','https://zoom.us/j/4782746197#success');
 
-INSERT INTO Tutorial (Course_ID, TutTime_HH, Weekday, Zoom) VALUES
-('STAT4609',17,2,'https://hku.zoom.us/j/93095224906'),
-('COMP3278',9,5,'https://hku.zoom.com.cn/j/2640918958?pwd=UmFpek1YMkUzNTFoL0ljRW84M1VLUT09'),
-('MATH4602',14,5,'https://hku.zoom.us/j/99227888994?pwd=eXZLQkRDM2l6bXU4R2VJZDBNQlNhQT09'),
-('CCHU9074',18,3,'https://hku.zoom.us/j/91517172449?pwd=RXppbW5ldVdZZ2JvWjlJV1FhM2pDQT09'),
-('COMP2396',12,2,'https://hku.zoom.us/j/97902227890?pwd=QnlWWHdudGY0K21GeHhTa3JDQ3Urdz09'),
-('CCCH9005',10,3,'https://hku.zoom.us/j/3531454530?pwd=VUpWMUhmck1yMjE5TUhuU0pGWHBmUT09');
+INSERT INTO LectTime (Course_ID, ClassID, LectTime_HH, LectTime_Duration, Weekday) VALUES
+('STAT4609','01',13,3,4),
+('COMP3314','01',14,3,1),
+('COMP3278','01',9,2,2),
+('MATH4602','01',9,2,1),
+('MATH4602','02',9,1,4),
+('CCHU9074','01',16,2,3),
+('COMP2396','01',12,2,5),
+('CCCH9005','01',14,2,3),
+('PHYS3450','01',3,1,2),
+('PHYS3450','02',3,2,5),
+('PHYS2155','01',12,1,2),
+('PHYS2155','02',12,2,5);
+
+INSERT INTO Tutorial (Course_ID, ClassID, TutTime_HH, Weekday, Zoom) VALUES
+('STAT4609','02',17,2,'https://hku.zoom.us/j/93095224906'),
+('COMP3278','02',9,5,'https://hku.zoom.com.cn/j/2640918958?pwd=UmFpek1YMkUzNTFoL0ljRW84M1VLUT09'),
+('MATH4602','03',14,5,'https://hku.zoom.us/j/99227888994?pwd=eXZLQkRDM2l6bXU4R2VJZDBNQlNhQT09'),
+('CCHU9074','02',18,3,'https://hku.zoom.us/j/91517172449?pwd=RXppbW5ldVdZZ2JvWjlJV1FhM2pDQT09'),
+('COMP2396','02',12,2,'https://hku.zoom.us/j/97902227890?pwd=QnlWWHdudGY0K21GeHhTa3JDQ3Urdz09'),
+('CCCH9005','02',10,3,'https://hku.zoom.us/j/3531454530?pwd=VUpWMUhmck1yMjE5TUhuU0pGWHBmUT09');

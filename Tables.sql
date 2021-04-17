@@ -8,6 +8,12 @@ CREATE TABLE Student (
   PRIMARY KEY (ID)
 );
 
+CREATE TABLE StudentType (
+  ID VARCHAR(10) NOT NULL,
+  StudentType VARCHAR(10) NOT NULL,
+  PRIMARY KEY (ID)
+);
+
 CREATE TABLE Course (
   Course_ID VARCHAR(8) NOT NULL,
   name VARCHAR(60) NOT NULL,
@@ -41,27 +47,37 @@ CREATE TABLE Teaches (
   FOREIGN KEY (Course_ID) REFERENCES Course (Course_ID)
 );
 
+CREATE TABLE Classes (
+  Course_ID VARCHAR(8) NOT NULL,
+  ClassID VARCHAR(2) NOT NULL,
+  PRIMARY KEY (Course_ID, ClassID),
+  FOREIGN KEY (Course_ID) REFERENCES Course (Course_ID)
+);
+
 CREATE TABLE Lecture (
   Course_ID VARCHAR(8) NOT NULL,
+  ClassID VARCHAR(2) NOT NULL,
   Zoom VARCHAR(128) NOT NULL,
-  PRIMARY KEY (Course_ID, Zoom),
+  PRIMARY KEY (Course_ID, ClassID),
   FOREIGN KEY (Course_ID) REFERENCES Course (Course_ID)
 );
 
 CREATE TABLE LectTime (
   Course_ID VARCHAR(8) NOT NULL,
+  ClassID VARCHAR(2) NOT NULL,
   LectTime_HH INT NOT NULL,
   LectTime_Duration INT NOT NULL,
   Weekday INT NOT NULL,
-  PRIMARY KEY (Course_ID, Weekday),
+  PRIMARY KEY (Course_ID, ClassID),
   FOREIGN KEY (Course_ID) REFERENCES Course (Course_ID)
 );
 
 CREATE TABLE Tutorial (
   Course_ID VARCHAR(8) NOT NULL,
+  ClassID VARCHAR(2) NOT NULL,
   TutTime_HH INT NOT NULL,
   Weekday INT NOT NULL,
   Zoom VARCHAR(128),
-  PRIMARY KEY (Course_ID, Zoom),
+  PRIMARY KEY (Course_ID, ClassID),
   FOREIGN KEY (Course_ID) REFERENCES Course (Course_ID)
 );
