@@ -18,7 +18,7 @@ number_to_days = ["", "Monday", "Tuesday",
     "Wednesday", "Thursday", "Friday", "Saturday"]
 
 course = {
-    "code": "PHYS3450",
+    "code": "PHYS2155",
     "title": "Capstone experience for statistics undergraduates",
     "course_info": "This course studies the principles, design, administration, and implementation of database management systems. Topics include: entity-relationship model, relational model, relational algebra, database design and normalization, database query languages, indexing schemes, integrity and concurrency control.",
     # there can be more than one lecture (duration, (day_number, starting_hour, starting_min))
@@ -159,8 +159,9 @@ def get_headline(course, name, date):
 
         [
             sg.Text("Welcome back, {}! You have a class of {} scheduled within an hour.".format(
-                name, course["code"]), font="Arial 12", text_color="lightgrey", pad=((2, 0), (1, 3))) ,
-            sg.Button("Logout", size=(10, 1), pad=((130, 10), (0, 0)), font="Arial 9 bold")
+                name, course["code"]), font="Arial 12", text_color="lightgrey", pad=((2, 0), (1, 3))),
+            sg.Button("Logout", size=(10, 1), pad=((130, 10), (0, 0)),
+                      font="Arial 9 bold", enable_events=True, key="-LOGOUT-", tooltip="Logout")
         ],
         [
             sg.Text("{}".format(course["course_info"]), font="Arial 9 italic",
@@ -246,7 +247,8 @@ def draw_course_window(course, user, login_time):
     while True:
         event, values = window.read()
 
-        if event == sg.WIN_CLOSED or event == "Logout":
+        if event == sg.WIN_CLOSED or event == "-LOGOUT-":
+            window.close()
             break
 
         # when user clicks "send email" button

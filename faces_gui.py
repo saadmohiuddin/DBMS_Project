@@ -155,8 +155,8 @@ while True:
                     [sg.Text("HKU MOODLE 2.0", font="Arial 65 italic",
                              text_color="lightgrey", pad=((70, 50), (10, 10)))], line2,
 
-                    [sg.Button("Continue", size=(10, 2), pad=((650, 30), (80, 8)), font="Arial 9 bold"),
-                               sg.Button("Logout", size=(10, 2), pad=((0, 10), (80, 8)), font="Arial 9 bold")]
+                    [sg.Button("Continue", size=(10, 2), pad=((650, 30), (80, 8)), font="Arial 9 bold", tooltip="Continue"),
+                               sg.Button("Logout", size=(10, 2), pad=((0, 10), (80, 8)), font="Arial 9 bold", tooltip="Logout")]
                 ]
 
                 transition_window = sg.Window("{}'s moodle".format(
@@ -165,9 +165,9 @@ while True:
                 cv2.destroyAllWindows()
                 while True:
                     t_event,t_values=transition_window.read()
-                    if t_event == sg.WIN_CLOSED or t_event=="Logout":
+                    if t_event == sg.WIN_CLOSED or t_event == "Logout":
+                        transition_window.close()
                         break
-
 
                     if t_event == "Continue":
                         transition_window.close()
@@ -179,10 +179,9 @@ while True:
                             all_classes = selectAllCourses(current_id)
                             draw_timetable_window(all_classes,
                                                  user, login_time)
-                        #
-                        # logout_time = date.now()
+                            
                         break
-                    window.close()
+                    #window.close()
                 update_logout_time(current_id)
 
         # If the face is unrecognized

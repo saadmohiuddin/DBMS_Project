@@ -140,6 +140,7 @@ def send_email(course, user, paths, filenames):
                      "Failed to attach recent course materials due to message size limits.")
         body = body.replace("Recent lecture and tutorial materials are attached with the email.",
                      "Failed to attach recent course materials due to message size limits.")
+
         # Turn these into plain/html MIMEText objects (plain in case html is not enabled for some users)
         message.attach(MIMEText(body, "plain"))
         part2 = MIMEText(html, "html")
