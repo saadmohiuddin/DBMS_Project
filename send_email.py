@@ -41,7 +41,7 @@ def send_email(course, user, paths, filenames):
     message["From"] = sender_email
     message["To"] = receiver_email
     message["Subject"] = subject
-    message["Bcc"] = receiver_email  # Recommended for mass emails
+    message["Bcc"] = receiver_email
 
     body = """
     Dear {0},\n\n
@@ -79,13 +79,12 @@ def send_email(course, user, paths, filenames):
         <br><span style="font-weight: bold">Tutorial:</span> {8}
         <br><span style="font-weight: bold">Zoom link:</span> {9}
         <br>
-        <br>Recent lecture and tutorial materials are attached with the email. Please
-        refer to <a href="https://moodle.hku.hk/login/" style="font-weight: bold; color: red; text-decoration: underline;">Moodle</a> for more information.
+        <br>Recent lecture and tutorial materials are attached. Please refer to <a href="https://moodle.hku.hk/login/" style="font-weight: bold; color: red; text-decoration: underline;">Moodle</a> for more information.
         <br>
         <p></p>
         <p></p>
         </p>
-      </body>
+        </body>
     </html>
     """.format(name, course_code, course_title,
                professor_info[0], professor_info[2],
@@ -116,14 +115,40 @@ def send_email(course, user, paths, filenames):
             "Content-Disposition",
             f"attachment; filename= {name}",
         )
-
+        
         # Add attachment to message and convert message to string
         message.attach(part)
 
     text = message.as_string()
 
-    # Log in to server using secure context and send email
-    context=ssl.create_default_context()
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-        server.login(sender_email, password)
-        server.sendmail(sender_email, receiver_email, text)
+    try:
+        # Log in to server using secure context and send email
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(sender_email, receiver_email, text)
+
+            
+    except:
+        message = MIMEMultipart("alternative")
+        message["From"] = sender_email
+        message["To"] = receiver_email
+        message["Subject"] = subject
+        message["Bcc"] = receiver_email
+        
+        html = html.replace("Recent lecture and tutorial materials are attached with the email.",
+                     "Failed to attach recent course materials due to message size limits.")
+        body = body.replace("Recent lecture and tutorial materials are attached with the email.",
+                     "Failed to attach recent course materials due to message size limits.")
+        # Turn these into plain/html MIMEText objects (plain in case html is not enabled for some users)
+        message.attach(MIMEText(body, "plain"))
+        part2 = MIMEText(html, "html")
+        message.attach(part2)
+        
+        text = message.as_string()
+
+        # Log in to server using secure context and send email
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(sender_email, receiver_email, text)        
