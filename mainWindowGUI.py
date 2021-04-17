@@ -18,7 +18,7 @@ number_to_days = ["", "Monday", "Tuesday",
     "Wednesday", "Thursday", "Friday", "Saturday"]
 
 course = {
-    "code": "COMP3278",
+    "code": "PHYS3450",
     "title": "Capstone experience for statistics undergraduates",
     "course_info": "This course studies the principles, design, administration, and implementation of database management systems. Topics include: entity-relationship model, relational model, relational algebra, database design and normalization, database query languages, indexing schemes, integrity and concurrency control.",
     # there can be more than one lecture (duration, (day_number, starting_hour, starting_min))
@@ -86,7 +86,7 @@ def course_materials_layout(course_materials):
             [
                 sg.Frame(f.capitalize(), [
                     [sg.Listbox(values=list(
-                        map(lambda s: s.strip(".pdf"), course_materials[f])),
+                        map(lambda s: s[:-4], course_materials[f])),
                         size=size_listbox, key=f"{f}_list", enable_events=True,
                         font="Arial 9 bold italic",
                         tooltip=f"Open {f.strip('s')}\nmaterials")]
