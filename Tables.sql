@@ -8,12 +8,12 @@ CREATE TABLE Student (
   PRIMARY KEY (ID)
 );
 
-CREATE TABLE ParttimeStudent (
+CREATE TABLE FullTime (
   ID VARCHAR(10) NOT NULL,
   PRIMARY KEY (ID)
 );
-                   
-CREATE TABLE FulltimeStudent (
+
+CREATE TABLE PartTime (
   ID VARCHAR(10) NOT NULL,
   PRIMARY KEY (ID)
 );

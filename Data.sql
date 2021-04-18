@@ -5,12 +5,12 @@ INSERT INTO Student (ID, name, email, log_in_time, log_out_time) VALUES
 ('3035492989','Mohiuddin Saad','jmcroissant15973@gmail.com','2021-03-12 17:25:00','2021-03-12 18:05:00'),
 ('3035436399','Vanessa Leung Jia Min','historia15973@gmail.com','2021-03-13 11:52:00','2021-03-13 12:05:00');
 
-INSERT INTO StudentType (ID, StudentType) VALUES
-('3035445364','Full Time'),
-('3035445974','Full Time'),
-('3035602821','Full Time'),
-('3035492989','Full Time'),
-('3035436399','Full Time');
+INSERT INTO FullTime (ID) VALUES
+('3035445364'),
+('3035445974'),
+('3035602821'),
+('3035492989'),
+('3035436399');
 
 INSERT INTO Course (Course_ID, path_to_materials, name, info, teachers_message) VALUES
 ('STAT4609','/notes/STAT4609','Big Data Analytics','In the past decade, huge volume of data with highly complicated structure has appeared in every aspect, such as social web logs, photographs, tweets and others. This course focuses on the practical knowledge and skills of advanced analytics and statistical modeling for solving big data problems.','Consuming food or beverages of any kind is strictly prohibited during class times.'),
