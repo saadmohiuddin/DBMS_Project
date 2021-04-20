@@ -18,7 +18,7 @@ number_to_days = ["", "Monday", "Tuesday",
     "Wednesday", "Thursday", "Friday", "Saturday"]
 
 course = {
-    "code": "PHYS2155",
+    "code": "MATH4602",
     "title": "Capstone experience for statistics undergraduates",
     "course_info": "This course studies the principles, design, administration, and implementation of database management systems. Topics include: entity-relationship model, relational model, relational algebra, database design and normalization, database query languages, indexing schemes, integrity and concurrency control.",
     # there can be more than one lecture (duration, (day_number, starting_hour, starting_min))
