@@ -53,14 +53,14 @@ CREATE TABLE Teaches (
 
 CREATE TABLE Classes (
   Course_ID VARCHAR(8) NOT NULL,
-  ClassID VARCHAR(2) NOT NULL,
+  ClassID VARCHAR(1) NOT NULL,
   PRIMARY KEY (Course_ID, ClassID),
   FOREIGN KEY (Course_ID) REFERENCES Course (Course_ID)
 );
 
 CREATE TABLE Lecture (
   Course_ID VARCHAR(8) NOT NULL,
-  ClassID VARCHAR(2) NOT NULL,
+  ClassID VARCHAR(1) NOT NULL,
   Zoom VARCHAR(128) NOT NULL,
   PRIMARY KEY (Course_ID, ClassID),
   FOREIGN KEY (Course_ID) REFERENCES Course (Course_ID)
@@ -68,7 +68,7 @@ CREATE TABLE Lecture (
 
 CREATE TABLE LectTime (
   Course_ID VARCHAR(8) NOT NULL,
-  ClassID VARCHAR(2) NOT NULL,
+  ClassID VARCHAR(1) NOT NULL,
   LectTime_HH INT NOT NULL,
   LectTime_Duration INT NOT NULL,
   Weekday INT NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE LectTime (
 
 CREATE TABLE Tutorial (
   Course_ID VARCHAR(8) NOT NULL,
-  ClassID VARCHAR(2) NOT NULL,
+  ClassID VARCHAR(1) NOT NULL,
   TutTime_HH INT NOT NULL,
   Weekday INT NOT NULL,
   Zoom VARCHAR(128),
