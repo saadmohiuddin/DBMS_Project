@@ -58,11 +58,12 @@ python train.py
 ### 2. Database Design
 
 #### 2.1 Define Database
-**You need to** add your information to `Data.sql` to insert data into Tables Student and Takes.      
+**You need to** add your information to `Data.sql` to insert data into the tables Student and Takes. You can also add the relevant data for the courses you're taking into the relevant tables such as Courses etc.
+
 Here is a sample code for `Student`.
 ```
 INSERT INTO Student (ID, name, email, log_in_time, log_out_time) VALUES
-('12345','Bob','bob@gmail.com','2021-03-08 09:01:00','2021-03-08 09:05:00');
+('3033333333','Bob','bob@gmail.com','2021-03-08 09:01:00','2021-03-08 09:05:00');
 ```
 
 #### 2.2 Import Database
