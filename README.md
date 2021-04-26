@@ -4,7 +4,7 @@ Face recognition using python and mysql.
 
 *******
 
-## Useage
+## Usage
 
 ### Environment
 
@@ -23,7 +23,7 @@ pip install -r requirements.txt
 
 [Windows](https://dev.mysql.com/downloads/installer/)
 
-You'll obtain an account and password after installation, then you should modify the `faces.py`, with the corresponding
+You'll obtain an account and password after installation, then you should modify the `faces_gui.py`, with the corresponding
 `user` and `passwd`:
 ```
 # create database connection
@@ -39,12 +39,12 @@ myconn = mysql.connector.connect(host="localhost", user="root", passwd="xxxxx", 
 #### 1.1 Collect Face Data
 ```
 """
-user_name = "Jack"   # the name
+user_name = "3033333333"   # UID
 NUM_IMGS = 400       # the number of saved images
 """
 python face_capture.py
 ```
-The camera will be activated and the captured images will be stored in `data/Jack` folder.      
+The camera will be activated and the captured images will be stored in `data/3033333333` folder.      
 **Note:** Only one person’s images can be captured at a time.
 
 #### 1.2 Train a Face Recognition Model
@@ -58,26 +58,15 @@ python train.py
 ### 2. Database Design
 
 #### 2.1 Define Database
-**You need to** create tables in `facerecognition.sql`.      
+**You need to** add your information to `Data.sql` to insert data into Tables Student and Takes.      
 Here is a sample code for `Student`.
 ```
-# Create TABLE 'Student'
-CREATE TABLE `Student` (
-  `student_id` int NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `login_time` time NOT NULL,
-  `login_date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-LOCK TABLES `Student` WRITE;
-/*!40000 ALTER TABLE `Student` DISABLE KEYS */;
-INSERT INTO `Student` VALUES (1, "JACK", NOW(), '2021-01-20');
-/*!40000 ALTER TABLE `Student` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO Student (ID, name, email, log_in_time, log_out_time) VALUES
+('12345','Bob','bob@gmail.com','2021-03-08 09:01:00','2021-03-08 09:05:00');
 ```
 
 #### 2.2 Import Database
-Open mysql server and import the file `facerecognition.sql`.
+Open mysql server and import the file `Tables.sql` and `Data.sql`.
 ```
 # login the mysql command
 mysql -u root -p
@@ -87,23 +76,18 @@ mysql> CREATE DATABASE facerecognition;
 mysql> USE facerecognition;
 
 # import from sql file
-mysql> source facerecognition.sql
+mysql> source Tables.sql
+mysql> source Data.sql
 ```
 
 
 
 ### 3. Login Interface
 
-#### 3.1 OpenCV GUI
-```
-python faces.py
-```
-
-#### 3.2 PySimpleGUI GUI
+#### 3.1 PySimpleGUI GUI
 ```
 python faces_gui.py
 ```
 
-The camera will be activated and recognize your face using the pretrained model.    
-**You need to** implement other useful functions in this part.
-
+The camera will be activated and recognize your face using the pretrained model.
+This will open up the python GUI for the student portal Moodle 2.0.
