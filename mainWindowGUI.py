@@ -32,24 +32,24 @@ def lecturer_layout(course):
     text_color = "white"
     lecturer_info = [
         sg.Column([[sg.Text("Name:", font=bold_text,
-                    justification='left', size=(6, 1), text_color=text_color)]]),
+                    justification='left', size=(5, 1), text_color=text_color)]]),
         sg.Column([[sg.Text("{}".format(course["lecturer"][0]), font=simple_text,
-                justification='left', size=(10, 1), text_color=text_color)]]),
+                justification='left', size=(12, 1), text_color=text_color)]]),
         sg.Column([[sg.Text("Email:", font=bold_text,
-                justification='right', size=(7, 1), text_color=text_color)]]),
+                justification='right', size=(6, 1), text_color=text_color)]]),
         sg.Column([[sg.Text("{}".format(course["lecturer"][2]), font=simple_text,
-                    justification='left', size=(13, 1), text_color=text_color)]]),
+                    justification='left', size=(18, 1), text_color=text_color)]]),
         sg.Column([[sg.Text("Office address: ", font=bold_text,
                 justification='right', size=(15, 1), text_color=text_color)]]),
         sg.Column([[sg.Text("{}".format(course["lecturer"][1]), font=simple_text,
-                justification='left', size=(7, 1), text_color=text_color)]])
+                justification='left', size=(8, 1), text_color=text_color)]])
     ]
 
     teacher_msg = [
         sg.Column([[sg.Text("Message:", font=bold_text,
-                    justification='left', size=(8, 1), text_color="red")]]),
-        sg.Column([[sg.Text("{}".format(course["teacher_msg"]), font="Arial 10",
-                            justification='left', size=(83, 2), text_color="red")]])
+                    justification='left', size=(8, 1), text_color="white")]]),
+        sg.Column([[sg.Text("{}".format(course["teacher_msg"]), font="Arial 11",
+                            justification='left', size=(74, 2), text_color="white")]])
     ]
 
     lecturer_frame = [
@@ -148,7 +148,7 @@ def get_headline(course, name, date):
         [
             sg.Text("Welcome back, {}! You have a class of {} scheduled within an hour.".format(
                 name, course["code"]), font="Arial 12", text_color="lightgrey", pad=((2, 0), (1, 3))),
-            sg.Button("Logout", size=(10, 1), pad=((130, 10), (0, 0)),
+            sg.Button("Logout", size=(10, 1), pad=((120, 10), (0, 0)),
                       font="Arial 9 bold", enable_events=True, key="-LOGOUT-", tooltip="Logout")
         ],
         [

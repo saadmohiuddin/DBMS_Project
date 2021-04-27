@@ -121,6 +121,7 @@ while True:
 
                 # login time update
                 login_time = update_login_time(current_id)
+                date = datetime.now().strftime("at %H:%M:%S on %d %B, %Y")
 
                 # get user info from the DB
                 user = getUser(current_id)
@@ -176,12 +177,12 @@ while True:
                         # if have class in an hour, show course window
                         if len(classInHour) > 0:
                             course = selectCourse(classInHour[0])
-                            draw_course_window(course, user, login_time)
+                            draw_course_window(course, user, date)
                         # else show timetable window
                         else:
                             all_classes = selectAllCourses(current_id)
                             draw_timetable_window(all_classes,
-                                                 user, login_time)
+                                                 user, date)
 
                         break
                 # logout time updated

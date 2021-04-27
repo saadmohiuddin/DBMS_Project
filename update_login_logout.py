@@ -2,6 +2,7 @@ import mysql.connector
 from datetime import datetime
 import PySimpleGUI as sg
 
+# create database connection
 myconn = mysql.connector.connect(
     host="localhost", user="root", passwd="MjzM1312!", database="facerecognition")
 cursor=myconn.cursor()

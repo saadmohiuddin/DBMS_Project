@@ -84,7 +84,7 @@ def draw_timetable_window(courses, user, login_time):
         [
             sg.Text("Welcome back, {}! You have no classes scheduled within at least an hour.".format(
                 name), font="Arial 12", text_color="lightgrey", pad=((0, 0), (5, 5))),
-            sg.Button("Logout", size=(10, 1), pad=((150, 10), (8, 8)),
+            sg.Button("Logout", size=(10, 1), pad=((135, 10), (8, 8)),
                       font="Arial 9 bold", tooltip="Logout")
         ]
     ]
