@@ -58,7 +58,7 @@ python train.py
 ### 2. Database Design
 
 #### 2.1 Define Database
-**You need to** add your information to `Data.sql` to insert data into the tables Student and Takes. You can also add the relevant data for the courses you're taking into the relevant tables such as Courses etc.
+**You need to** add your information to `facerecognition.sql` to insert data into the tables Student and Takes. You can also add the relevant data for the courses you're taking into the relevant tables such as Courses etc.
 
 Here is a sample code for `Student`.
 ```
@@ -67,7 +67,7 @@ INSERT INTO Student (ID, name, email, log_in_time, log_out_time) VALUES
 ```
 
 #### 2.2 Import Database
-Open mysql server and import the file `Tables.sql` and `Data.sql`.
+Open mysql server and import the file `facerecognition.sql`.
 ```
 # login the mysql command
 mysql -u root -p
@@ -77,8 +77,7 @@ mysql> CREATE DATABASE facerecognition;
 mysql> USE facerecognition;
 
 # import from sql file
-mysql> source Tables.sql
-mysql> source Data.sql
+mysql> source facerecognition.sql
 ```
 
 
