@@ -4,7 +4,7 @@ import PySimpleGUI as sg
 
 # create database connection
 myconn = mysql.connector.connect(
-    host="localhost", user="root", passwd="MjzM1312!", database="facerecognition")
+    host="localhost", user="root", passwd="xxxxxxxx", database="facerecognition")
 cursor=myconn.cursor()
 
 
