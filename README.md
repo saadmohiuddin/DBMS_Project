@@ -79,8 +79,14 @@ mysql> USE facerecognition;
 # import from sql file
 mysql> source facerecognition.sql
 ```
+#### 2.3 Add course notes files
+```
+For adding notes of a new course:
+1. Make a folder with the name corresponding to the Course_id
+2. Make subfolders named "assignment", "lecture" and "tutorial"
+3. Add pdf files corresponding to the subfolders
 
-
+```
 
 ### 3. Login Interface
 

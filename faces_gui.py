@@ -118,7 +118,7 @@ while True:
                 cap.release()
 
                 login_time=update_login_time(current_id)
-                
+
                 #print(data)
                 user=getUser(current_id)
 
@@ -179,7 +179,7 @@ while True:
                             all_classes = selectAllCourses(current_id)
                             draw_timetable_window(all_classes,
                                                  user, login_time)
-                            
+
                         break
                     #window.close()
                 update_logout_time(current_id)
