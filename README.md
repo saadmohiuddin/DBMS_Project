@@ -23,7 +23,7 @@ pip install -r requirements.txt
 
 [Windows](https://dev.mysql.com/downloads/installer/)
 
-You'll obtain an account and password after installation, then you should modify the `faces_gui.py`, with the corresponding
+You'll obtain an account and password after installation, then you should modify `faces_gui.py` and `update_login_logout.py`, with the corresponding
 `user` and `passwd`:
 ```
 # create database connection
@@ -38,6 +38,7 @@ myconn = mysql.connector.connect(host="localhost", user="root", passwd="xxxxx", 
 
 #### 1.1 Collect Face Data
 ```
+"Make these user_name changes within the file"
 """
 user_name = "3033333333"   # UID
 NUM_IMGS = 400       # the number of saved images
@@ -76,7 +77,7 @@ mysql -u root -p
 mysql> CREATE DATABASE facerecognition;
 mysql> USE facerecognition;
 
-# import from sql file
+# import from sql file (try using the full name (including path), if this command does not work this way)
 mysql> source facerecognition.sql
 ```
 #### 2.3 Add course notes files
@@ -94,6 +95,5 @@ For adding notes of a new course:
 ```
 python faces_gui.py
 ```
-
 The camera will be activated and recognize your face using the pretrained model.
 This will open up the python GUI for the student portal Moodle 2.0.
