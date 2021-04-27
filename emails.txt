@@ -1,6 +1,4 @@
-emails
-Jan 1 2000
-
+emails (ids and passwords for email accounts created for our Student table data)
 
 mistermiyagi15973@gmail.com
 munich73
