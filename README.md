@@ -23,7 +23,7 @@ pip install -r requirements.txt
 
 [Windows](https://dev.mysql.com/downloads/installer/)
 
-You'll obtain an account and password after installation, then you should modify `faces_gui.py` and `update_login_logout.py`, with the corresponding
+You'll obtain an account and password after installation, then you should modify `update_login_logout.py`, with the corresponding
 `user` and `passwd`:
 ```
 # create database connection
