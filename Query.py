@@ -1,16 +1,18 @@
 import mysql.connector
 from mysql.connector import Error
 from datetime import datetime, timedelta
+from update_login_logout import myconn
 
 
 
 def execute_read_query(query):
-    connection = mysql.connector.connect(host="localhost", user="root", passwd="Mysql7-4", database="facerecognition")
-    cursor = connection.cursor()
-    result = None
+    connection = myconn #mysql.connector.connect(
+        #host="localhost", user="root", passwd="MjzM1312!", database="facerecognition")
+    cursor=connection.cursor()
+    result=None
     try:
         cursor.execute(query)
-        result = cursor.fetchall()
+        result=cursor.fetchall()
         return result
     except Error as e:
         print(f"The error '{e}' occurred")

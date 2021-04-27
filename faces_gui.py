@@ -7,7 +7,7 @@ import pickle
 from datetime import datetime
 import sys
 import PySimpleGUI as sg
-from update_login_logout import update_login_time, update_logout_time
+from update_login_logout import update_login_time, update_logout_time, myconn
 from timetable import draw_timetable_window
 from mainWindowGUI import draw_course_window
 
@@ -18,45 +18,47 @@ sg.theme('DarkBlue6')
 
 
 # 1 Create database connection
-myconn = mysql.connector.connect(host="localhost", user="root", passwd="Mysql7-4", database="facerecognition")
 date = datetime.utcnow()
-now = datetime.now()
-current_time = now.strftime("%H:%M:%S")
+now=datetime.now()
+current_time=now.strftime("%H:%M:%S")
 cursor = myconn.cursor()
 
 
 #2 Load recognize and read label from model
-recognizer = cv2.face.LBPHFaceRecognizer_create()
+recognizer=cv2.face.LBPHFaceRecognizer_create()
 recognizer.read("train.yml")
 
-labels = {"person_name": 1}
+labels={"person_name": 1}
 with open("labels.pickle", "rb") as f:
-    labels = pickle.load(f)
-    labels = {v: k for k, v in labels.items()}
+    labels=pickle.load(f)
+    labels={v: k for k, v in labels.items()}
 
 # create text to speech
-engine = pyttsx3.init()
-rate = engine.getProperty("rate")
+engine=pyttsx3.init()
+rate=engine.getProperty("rate")
 engine.setProperty("rate", 175)
 
 # Define camera and detect face
-face_cascade = cv2.CascadeClassifier('haarcascade/haarcascade_frontalface_default.xml')
-cap = cv2.VideoCapture(0)
+face_cascade=cv2.CascadeClassifier(
+    'haarcascade/haarcascade_frontalface_default.xml')
+cap=cv2.VideoCapture(0)
 
 
 # 3 Define pysimplegui setting
-layout =  [
-    [sg.Text('Setting', size=(18,1), font=('Any',18),text_color='#1c86ee' ,justification='left')],
-    [sg.Text('Confidence'), sg.Slider(range=(0,100),orientation='h', resolution=1, default_value=22, size=(15,15), key='confidence')],
+layout=[
+    [sg.Text('Setting', size=(18, 1), font=('Any', 18),
+             text_color='#1c86ee', justification='left')],
+    [sg.Text('Confidence'), sg.Slider(range=(0, 100), orientation='h',
+             resolution=1, default_value=22, size=(15, 15), key='confidence')],
     [sg.OK(), sg.Cancel()]
-      ]
-win = sg.Window('Attendance System',
-        default_element_size=(21,1),
+]
+win=sg.Window('Attendance System',
+        default_element_size=(21, 1),
         text_justification='right',
         auto_size_text=False).Layout(layout)
 #event, values = win.Read()
-#if event is None or event =='Cancel':
-#    exit()
+#if event is None or event == 'Cancel':
+    #exit()
 #args = values
 #gui_confidence = args["confidence"]
 win_started = False
@@ -117,19 +119,13 @@ while True:
                 win.Close()
                 cap.release()
 
-                login_time=update_login_time(current_id)
+                # login time update
+                login_time = update_login_time(current_id)
 
-                #print(data)
-                user=getUser(current_id)
-
-                date = datetime.now().strftime("at %H:%M:%S on %d %B, %Y")
-                #If this is the case, then we need to keep only the latest login details in DB
-                update_login_time(current_id)
+                # get user info from the DB
                 user = getUser(current_id)
 
-                # Need to call another MySQL query that gives the email_id as well in addition to what is contained in variable data
-                #user = {"id" : , "email" : , "name": }
-
+                # Transition window GUI
                 line1 = [sg.Text(text="--------------------" * 9,
                          font='Arial 12 bold',
                          text_color='#cdb6cd',
@@ -161,27 +157,34 @@ while True:
 
                 transition_window = sg.Window("{}'s moodle".format(
                     name), transition_layout, size=(900, 600))
-                # Try to close once we open the next one for smoother transition
+                
                 cv2.destroyAllWindows()
                 while True:
-                    t_event,t_values=transition_window.read()
+                    t_event, t_values = transition_window.read()
+
+                    # actions if logged out or window closed
                     if t_event == sg.WIN_CLOSED or t_event == "Logout":
                         transition_window.close()
                         break
 
+                    # actions if Continue clicked
                     if t_event == "Continue":
                         transition_window.close()
+                        # check if class in an hour, using MySQL
                         classInHour = checkClass(current_id)
+
+                        # if have class in an hour, show course window
                         if len(classInHour) > 0:
                             course = selectCourse(classInHour[0])
                             draw_course_window(course, user, login_time)
+                        # else show timetable window
                         else:
                             all_classes = selectAllCourses(current_id)
                             draw_timetable_window(all_classes,
                                                  user, login_time)
 
                         break
-                    #window.close()
+                # logout time updated
                 update_logout_time(current_id)
 
         # If the face is unrecognized

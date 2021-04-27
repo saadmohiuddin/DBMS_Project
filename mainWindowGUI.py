@@ -6,6 +6,7 @@ from notes import notes
 import os
 import subprocess
 import webbrowser
+from Query import selectCourse
 
 sg.theme('DarkBlue6')
 
@@ -17,26 +18,13 @@ default_frame_element_justification = 'left'
 number_to_days = ["", "Monday", "Tuesday",
     "Wednesday", "Thursday", "Friday", "Saturday"]
 
-course = {
-    "code": "MATH4602",
-    "title": "Capstone experience for statistics undergraduates",
-    "course_info": "This course studies the principles, design, administration, and implementation of database management systems. Topics include: entity-relationship model, relational model, relational algebra, database design and normalization, database query languages, indexing schemes, integrity and concurrency control.",
-    # there can be more than one lecture (duration, (day_number, starting_hour, starting_min))
-    "lecture": [(2, (5, 9, 30)), (1, (3, 9, 30))],
-    "tutorial": (1, (2, 9, 30)), #there can only be one tutorial
-    "zoom_link_lec": "https://hku.zoom.us/j/97686555806?pwd=NWxSNVRKTlNDU0NjYTgremxaQ3pldz09",
-    "zoom_link_tut": "https://hku.zoom.com.cn/j/2640918958?pwd=UmFpek1YMkUzNTFoL0ljRW84M1VLUT09",
-    "teacher_msg": "There will be 6 or 7 assignments. Problem sets will be assigned on Friday. Completed problem sets are due on the following Sunday. No problem sets will be accepted after the solutions have been posted.",
-    #(name, office_address, email_id)
-    "lecturer": ("Dr. Ping Luo", "CB326", "pluo@cs.hku.hk")
-}
-
 date = datetime.now().strftime("at %H:%M:%S on %d %B, %Y")
 
 person = {
     "name": "Junaid Malik",
     "email": "junaidzm@connect.hku.hk",
 }
+
 
 def lecturer_layout(course):
     bold_text = "Arial 12 bold"
@@ -171,6 +159,10 @@ def get_headline(course, name, date):
     return headline
 
 def draw_course_window(course, user, login_time):
+    """Draws timetable window using user info given by user, 
+    course full details in dict course and the login_time timestamp.
+    """
+    
     name = user["name"]
     date = login_time
 
@@ -276,4 +268,5 @@ def draw_course_window(course, user, login_time):
             webbrowser.open(course["zoom_link_tut"])
 
 if __name__ == '__main__':
+    course = selectCourse("STAT4609")
     draw_course_window(course, person, date)

@@ -188,7 +188,7 @@ INSERT INTO `Classes` (`Course_ID`, `ClassID`) VALUES
 ('COMP3278','L'),
 ('CCCH9005','L'),
 ('PHYS3450','L'),
-('PHYS3450','T')
+('PHYS3450','T'),
 ('PHYS2155','L'),
 ('PHYS2155','T'),
 ('MATH4602','L'),
@@ -236,7 +236,7 @@ INSERT INTO `Tutorial` (`Course_ID`, `ClassID`, `TutTime_HH`, `Weekday`, `Zoom`)
 ('STAT4609','T',17,2,'https://hku.zoom.us/j/93095224906'),
 ('COMP3278','T',9,5,'https://hku.zoom.com.cn/j/2640918958?pwd=UmFpek1YMkUzNTFoL0ljRW84M1VLUT09'),
 ('MATH4602','T',14,5,'https://hku.zoom.us/j/99227888994?pwd=eXZLQkRDM2l6bXU4R2VJZDBNQlNhQT09'),
-('CCCH9005','T',10,3,'https://hku.zoom.us/j/3531454530?pwd=VUpWMUhmck1yMjE5TUhuU0pGWHBmUT09')
+('CCCH9005','T',10,3,'https://hku.zoom.us/j/3531454530?pwd=VUpWMUhmck1yMjE5TUhuU0pGWHBmUT09'),
 ('PHYS3450','T', 15, 3, 'https://zoom.us/j/8237642261#success'),
 ('PHYS2155', 'T', 17, 3, 'https://zoom.us/j/4782746197#success');
                      

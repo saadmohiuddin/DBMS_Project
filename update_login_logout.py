@@ -1,14 +1,10 @@
-import urllib
-import numpy as np
 import mysql.connector
-import cv2
-import pyttsx3
-import pickle
 from datetime import datetime
-import sys
 import PySimpleGUI as sg
-myconn = mysql.connector.connect(host="localhost", user="root", passwd="Mysql7-4", database="facerecognition")
-cursor = myconn.cursor()
+
+myconn = mysql.connector.connect(
+    host="localhost", user="root", passwd="MjzM1312!", database="facerecognition")
+cursor=myconn.cursor()
 
 
 def update_login_time(current_id):

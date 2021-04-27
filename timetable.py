@@ -26,6 +26,8 @@ date = datetime.now().strftime("at %H:%M:%S on %d %B, %Y")
 
 
 def timetable(courses):
+    """This function contains the main GUI logic for creating the timetable given
+    #courses details courses."""
     data = [["{}:30 -\n{}:20".format(i, i + 1) if j == 0 else "" for j in range(0, 7)]
                                     for i in range(8, 20)]
     for k, v in courses.items():
@@ -67,7 +69,8 @@ def timetable(courses):
     return tt
 
 def draw_timetable_window(courses, user, login_time):
-
+    """Draws timetable window uses user info user, courses details courses 
+    and the login_time"""
     name = user["name"]
     date = login_time
 
