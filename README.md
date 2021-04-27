@@ -70,14 +70,14 @@ INSERT INTO Student (ID, name, email, log_in_time, log_out_time) VALUES
 #### 2.2 Import Database
 Open mysql server and import the file `facerecognition.sql`.
 ```
-# login the mysql command
+# login the mysql command (or either login with MySQL Command Line Client)
 mysql -u root -p
 
 # create database.  'mysql>' indicates we are now in the mysql command line
 mysql> CREATE DATABASE facerecognition;
 mysql> USE facerecognition;
 
-# import from sql file (try using the full name (including path), if this command does not work this way)
+# import from sql file (try using the full name (including path) <fullpath>\facerecognition.sql, if this command does not work this way)
 mysql> source facerecognition.sql
 ```
 #### 2.3 Add course notes files
