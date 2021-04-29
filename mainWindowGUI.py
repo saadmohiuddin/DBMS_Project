@@ -244,28 +244,40 @@ def draw_course_window(course, user, login_time):
             break
 
         # when user clicks "send email" button
-        if event == "-SEND_EMAIL-":
-            send_email(course, user, fullpaths, nameonly)
+        try:
+            if event == "-SEND_EMAIL-":
+                send_email(course, user, fullpaths, nameonly)
+        except:
+            e = sys.exc_info()[0]
+            print(f"Error \"{e}\" occured while sending an email!")
 
         #Open pdf files from course materials on click
-        if event == "lectures_list":
-            subprocess.Popen(os.path.join(
-                pathdict["lecture"], f"{values[event][0]}.pdf"), shell=True)
+        try:
+            if event == "lectures_list":
+                subprocess.Popen(os.path.join(
+                    pathdict["lecture"], f"{values[event][0]}.pdf"), shell=True)
 
-        if event == "tutorials_list":
-            subprocess.Popen(os.path.join(
-                pathdict["tutorial"], f"{values[event][0]}.pdf"), shell=True)
+            if event == "tutorials_list":
+                subprocess.Popen(os.path.join(
+                    pathdict["tutorial"], f"{values[event][0]}.pdf"), shell=True)
 
-        if event == "assignments_list":
-            subprocess.Popen(os.path.join(
-                pathdict["assignment"], f"{values[event][0]}.pdf"), shell=True)
-
+            if event == "assignments_list":
+                subprocess.Popen(os.path.join(
+                    pathdict["assignment"], f"{values[event][0]}.pdf"), shell=True)
+        except:
+            e = sys.exc_info()[0]
+            print(f"File opening error \"{e}\" occurred!")
+            
         # open links when clicked
-        if event == "-LEC_ZOOM-":
-            webbrowser.open(course["zoom_link_lec"])
+        try:
+            if event == "-LEC_ZOOM-":
+                webbrowser.open(course["zoom_link_lec"])
 
-        if event == "-TUT_ZOOM-":
-            webbrowser.open(course["zoom_link_tut"])
+            if event == "-TUT_ZOOM-":
+                webbrowser.open(course["zoom_link_tut"])
+        except:
+            e = sys.exc_info()[0]
+            print(f"Error \"{e}\"occured while opening zoom link!")
 
 if __name__ == '__main__':
     course = selectCourse("STAT4609")
