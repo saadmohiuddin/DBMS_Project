@@ -6,6 +6,7 @@ from notes import notes
 import os
 import subprocess
 import webbrowser
+import sys
 from Query import selectCourse
 
 sg.theme('DarkBlue6')
